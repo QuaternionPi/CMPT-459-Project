@@ -16,4 +16,4 @@ Out task will be to predict if rain will fall or not (RainTomorrow) based on the
 ## Justification
 Rainfall is important to predict not just to decide weather to grab an umbrella. It affects everything from air traffic to skiing to agriculture. It's essential for weather stations to provide accurate predictions on weather patterns for Australian citizens based on location-specific data. Therefore, the ability to predict future weather patterns based on current data is a valuable feature to predict and consider.
 
-The data set has many attributes important to climate prediction as mentioned above. 
+The data set has many attributes important to climate prediction as mentioned above. Based on the discussions present on the Kaggle page it appears that achieving >90% accuracy is possible. While we may not be able to achieve such accuracy it is never the less possible.
