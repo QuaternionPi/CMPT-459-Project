@@ -2,6 +2,11 @@ import argparse
 
 
 def parse_args() -> tuple[bool, str]:
+    """
+    Parses command line arguments.
+
+    :return: tuple of verbose and data
+    """
     parser = argparse.ArgumentParser(description="number of clusters to find")
     parser.add_argument(
         "--verbose", "-v", type=bool, help="print verbose", default=False
@@ -14,9 +19,12 @@ def parse_args() -> tuple[bool, str]:
     return (args.verbose, args.data)
 
 
-def main():
+def main() -> None:
+    """
+    Main function of the program
+    """
     (verbose, data) = parse_args()
 
 
-if __name__ == "__main__":
+if __name__ == "__main_":
     main()
