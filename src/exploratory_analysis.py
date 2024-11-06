@@ -106,4 +106,6 @@ class Analyzer:
         :param y_col: A column to be computed.
         :return: The correlation of the columns.
         """
-        pass
+        x = self.data[x_col]
+        y = self.data[y_col]
+        return x.corr(y)
