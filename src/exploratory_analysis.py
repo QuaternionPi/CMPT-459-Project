@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from writer import Writer
 
 
@@ -26,6 +27,8 @@ class Analyzer:
 
         x: pd.Series = self.data[col]
         plt.boxplot(x)
+        func_name = "box"
+        self._save(path, func_name, col)
 
         plt.show()
 
@@ -40,6 +43,8 @@ class Analyzer:
         x: pd.Series = self.data[x_col]
         y: pd.Series = self.data[y_col]
         plt.scatter(x, y)
+        func_name = "scatter"
+        self._save(path, func_name, x_col, y_col)
         plt.show()
 
     def scatter_plot_3d(
@@ -57,6 +62,8 @@ class Analyzer:
         y: pd.Series = self.data[y_col]
         z: pd.Series = self.data[z_col]
         plt.scatter(x, y, z)
+        func_name = "scatter_3d"
+        self._save(path, func_name, x_col, y_col, z_col)
         plt.show()
 
     def histogram(self, x_col: str, y_col: str, path: str | None = None) -> None:
@@ -70,6 +77,8 @@ class Analyzer:
         x: pd.Series = self.data[x_col]
         y: pd.Series = self.data[y_col]
         plt.hist(x, y)
+        func_name = "hist"
+        self._save(path, func_name, x_col, y_col)
         plt.show()
 
     def histogram_3d(
@@ -87,6 +96,8 @@ class Analyzer:
         y: pd.Series = self.data[y_col]
         z: pd.Series = self.data[z_col]
         plt.hist2d(x, y, z)
+        func_name = "hist_3d"
+        self._save(path, func_name, x_col, y_col, z_col)
         plt.show()
 
     def variance(self, col: str) -> float:
@@ -109,3 +120,19 @@ class Analyzer:
         x = self.data[x_col]
         y = self.data[y_col]
         return x.corr(y)
+
+    def _save(self, path: str | None, func: str, *cols: str) -> None:
+        """
+        Save a plot to file if path != null.
+
+        :param path: Path to save location.
+        :param func: Abbreviated name of calling function.
+        :param cols: Columns used in the function.
+        """
+        if path == None:
+            return
+        terms: list[str] = cols.insert(0, func)
+        filename = "-".join(terms).replace(" ", "-")
+        dest: str = os.path.join(path, filename)
+        os.mkdir(path)
+        plt.savefig(dest)
