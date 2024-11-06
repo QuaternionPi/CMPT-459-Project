@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from writer import Writer
 
 
@@ -21,7 +22,12 @@ class Analyzer:
         :param col: Column to be plotted.
         :param path: Path to save drawn image. None for no save.
         """
-        pass
+        plt.figure()
+
+        x: pd.Series = self.data[col]
+        plt.boxplot(x)
+
+        plt.show()
 
     def scatter_plot(self, x_col: str, y_col: str, path: str | None = None) -> None:
         """
