@@ -67,7 +67,10 @@ class Analyzer:
         :param y_col: Column to be counted on y-axis.
         :param path: Path to save drawn image. None for no save.
         """
-        pass
+        x: pd.Series = self.data[x_col]
+        y: pd.Series = self.data[y_col]
+        plt.hist(x, y)
+        plt.show()
 
     def histogram_3d(
         self, x_col: str, y_col: str, z_col: str, path: str | None = None
@@ -80,7 +83,11 @@ class Analyzer:
         :param z_col: Column to be counted on z-axis.
         :param path: Path to save drawn image. None for no save.
         """
-        pass
+        x: pd.Series = self.data[x_col]
+        y: pd.Series = self.data[y_col]
+        z: pd.Series = self.data[z_col]
+        plt.hist2d(x, y, z)
+        plt.show()
 
     def variance(self, col: str) -> float:
         """
