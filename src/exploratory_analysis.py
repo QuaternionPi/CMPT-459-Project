@@ -96,7 +96,7 @@ class Analyzer:
         :param col: The column to be computed.
         :return: The variance of the column.
         """
-        pass
+        return self.data[col].var()
 
     def correlation(self, x_col: str, y_col: str) -> float:
         """
