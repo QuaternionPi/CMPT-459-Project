@@ -46,13 +46,15 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
     column_pairs = [
         (numeric_columns[x], numeric_columns[y])
         for x in range(columns_count)
-        for y in range(x + 1, columns_count)
+        for y in range(columns_count)
+        if x < y
     ]
     column_triples = [
         (numeric_columns[x], numeric_columns[y], numeric_columns[z])
         for x in range(columns_count)
-        for y in range(x + 1, columns_count)
-        for z in range(y + 1, columns_count)
+        for y in range(columns_count)
+        for z in range(columns_count)
+        if x < y and y < z
     ]
 
     analyzer: Analyzer = Analyzer(numerics, writer)
@@ -72,7 +74,7 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
         print(variance)
 
     for x_col, y_col in column_pairs:
-        path = "./img"
+        path = "./eda"
         analyzer.scatter_plot(x_col, y_col, path)
 
 
