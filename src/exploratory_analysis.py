@@ -31,8 +31,9 @@ class Analyzer:
         plt.boxplot(x)
         func_name = "box"
         self._save(path, func_name, col)
-
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1 / 3)
+        plt.clf()
 
     def scatter_plot(self, x_col: str, y_col: str, path: str | None = None) -> None:
         """
@@ -50,7 +51,9 @@ class Analyzer:
         plt.scatter(x, y)
         func_name = "scatter"
         self._save(path, func_name, x_col, y_col)
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1 / 3)
+        plt.clf()
 
     def scatter_plot_3d(
         self, x_col: str, y_col: str, z_col: str, path: str | None = None
@@ -73,7 +76,9 @@ class Analyzer:
         plt.scatter(x, y, z)
         func_name = "scatter_3d"
         self._save(path, func_name, x_col, y_col, z_col)
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1 / 3)
+        plt.clf()
 
     def histogram(self, x_col: str, y_col: str, path: str | None = None) -> None:
         """
@@ -91,7 +96,9 @@ class Analyzer:
         plt.hist(x, y)
         func_name = "hist"
         self._save(path, func_name, x_col, y_col)
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1.3)
+        plt.clf()
 
     def histogram_3d(
         self, x_col: str, y_col: str, z_col: str, path: str | None = None
@@ -114,7 +121,9 @@ class Analyzer:
         plt.hist2d(x, y, z)
         func_name = "hist_3d"
         self._save(path, func_name, x_col, y_col, z_col)
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1 / 3)
+        plt.clf()
 
     def variance(self, col: str) -> float:
         """
