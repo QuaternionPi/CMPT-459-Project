@@ -131,7 +131,8 @@ class Analyzer:
         """
         if path == None:
             return
-        terms: list[str] = cols.insert(0, func)
+        terms: list[str] = list(cols)
+        terms.insert(0, func)
         filename = "-".join(terms).replace(" ", "-")
         dest: str = os.path.join(path, filename)
         os.mkdir(path)
