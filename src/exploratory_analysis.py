@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from pathlib import Path
 from writer import Writer
 
 
@@ -26,6 +27,7 @@ class Analyzer:
         plt.figure()
 
         x: pd.Series = self.data[col]
+        plt.title("Box Plot")
         plt.boxplot(x)
         func_name = "box"
         self._save(path, func_name, col)
@@ -42,6 +44,9 @@ class Analyzer:
         """
         x: pd.Series = self.data[x_col]
         y: pd.Series = self.data[y_col]
+        plt.xlabel(x_col)
+        plt.ylabel(y_col)
+        plt.title("Scatter Plot")
         plt.scatter(x, y)
         func_name = "scatter"
         self._save(path, func_name, x_col, y_col)
@@ -61,6 +66,10 @@ class Analyzer:
         x: pd.Series = self.data[x_col]
         y: pd.Series = self.data[y_col]
         z: pd.Series = self.data[z_col]
+        plt.xlabel(x_col)
+        plt.ylabel(y_col)
+        plt.zlabel(z_col)
+        plt.title("Scatter Plot 3D")
         plt.scatter(x, y, z)
         func_name = "scatter_3d"
         self._save(path, func_name, x_col, y_col, z_col)
@@ -76,6 +85,9 @@ class Analyzer:
         """
         x: pd.Series = self.data[x_col]
         y: pd.Series = self.data[y_col]
+        plt.xlabel(x_col)
+        plt.ylabel(y_col)
+        plt.title("Histogram")
         plt.hist(x, y)
         func_name = "hist"
         self._save(path, func_name, x_col, y_col)
@@ -95,6 +107,10 @@ class Analyzer:
         x: pd.Series = self.data[x_col]
         y: pd.Series = self.data[y_col]
         z: pd.Series = self.data[z_col]
+        plt.xlabel(x_col)
+        plt.ylabel(y_col)
+        plt.zlabel(z_col)
+        plt.title("Histogram 3D")
         plt.hist2d(x, y, z)
         func_name = "hist_3d"
         self._save(path, func_name, x_col, y_col, z_col)
@@ -135,5 +151,5 @@ class Analyzer:
         terms.insert(0, func)
         filename = "-".join(terms).replace(" ", "-")
         dest: str = os.path.join(path, filename)
-        os.mkdir(path)
+        Path(path).mkdir(parents=True, exist_ok=True)
         plt.savefig(dest)
