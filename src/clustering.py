@@ -42,8 +42,14 @@ class ClusterAnalyzer:
         """
         Compute the silhouette scores of clustering models.
 
-        :return: List of runtimes.
+        :return: List of silhouette score.
         """
+        scores: list[float] = []
+        for clustering in self.clusterings:
+            score: float = silhouette_score(
+                self.data, clustering.fit_predict(self.data)
+            )
+            scores.append(score)
         pass
 
     def visualize(self) -> list[tuple[Analyzer, Analyzer]]:
