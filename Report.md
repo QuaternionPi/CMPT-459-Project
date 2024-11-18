@@ -34,3 +34,16 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 ![Scatter plot of Location Encoding vs Pressure at 9 am](./eda/scatter-Location_enc-Pressure9am.png)
 ![Scatter plot of Wind Gust Speed vs Pressure at 9 am](./eda/scatter-WindGustSpeed-Pressure9am.png)
 ![Scatter plot of Location Encoding vs Wind Gust Speed](./eda/scatter-Location_enc-WindGustSpeed.png)
+
+## 4. Clustering
+1. Gather clustering algorithms
+   - We chose KMeans, OPTICS, and DBSCAN
+2. We performed these clusterings
+   - finding a good `eps` value for DBSCAN was hard. We chose 3
+3. We found runtimes, Silhouette scores
+4. Created visualizations
+
+### 4.1 Plots
+![KMeans Clustering](./kmeans/scatter-0-1.png)
+![OPTICS Clustering](./optics/scatter-0-1.png)
+![DBSCAN Clustering](./dbscan/scatter-0-1.png)
