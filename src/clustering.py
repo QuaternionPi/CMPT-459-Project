@@ -52,10 +52,20 @@ class ClusterAnalyzer:
             scores.append(score)
         pass
 
-    def visualize(self) -> list[tuple[Analyzer, Analyzer]]:
+    def visualize(self, writer: Writer) -> list[Analyzer]:
         """
         Return pairs of visualizers trained on PCA data.
 
-        :return: Pairs of 2d and 3d analyzers trained on PCA data.
+        :return: 2d analyzers trained regular data, drawn on PCA data.
         """
-        pass
+        pca = PCA(n_components=2)
+        reduced_data = pd.DataFrame(pca.fit_transform(self.data))
+
+        analyzers: list[Analyzer] = []
+        for clustering in self.clusterings:
+            y = clustering.fit_predict(self.data)
+            X = reduced_data.copy(deep=True)
+            X["rainfall"] = y
+            analyzer = Analyzer(X, writer)
+            analyzers.append(analyzer)
+        return analyzers
