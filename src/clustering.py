@@ -59,13 +59,16 @@ class ClusterAnalyzer:
         :return: 2d analyzers trained regular data, drawn on PCA data.
         """
         pca = PCA(n_components=2)
-        reduced_data = pd.DataFrame(pca.fit_transform(self.data))
+        reduced_data = pd.DataFrame(pca.fit_transform(self.data)).rename(
+            columns={0: "0", 1: "1"}
+        )
 
         analyzers: list[Analyzer] = []
         for clustering in self.clusterings:
             y = clustering.fit_predict(self.data)
             X = reduced_data.copy(deep=True)
-            X["rainfall"] = y
+            X["rains"] = y
             analyzer = Analyzer(X, writer)
             analyzers.append(analyzer)
+        print(self.data.to_numpy().shape)
         return analyzers

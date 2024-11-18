@@ -86,7 +86,7 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
 
     for x_col, y_col in column_pairs:
         path = "./eda"
-        analyzer.scatter_plot(x_col, y_col, path)
+        analyzer.scatter_plot(x_col, y_col, path=path)
 
 
 def clustering(data: pd.DataFrame, writer: Writer) -> None:
@@ -111,6 +111,10 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
     writer.write_line(times)
     writer.write_line("Clustering Silhouette Scores")
     writer.write_line(silhouettes)
+
+    paths = ["./kmeans", "./optics", "./dbscan"]
+    for visualizer, path in zip(visualizers, paths):
+        visualizer.scatter_plot("0", "1", "rains", path=path)
 
 
 def main() -> None:

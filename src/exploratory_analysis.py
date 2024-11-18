@@ -35,7 +35,13 @@ class Analyzer:
         plt.pause(1 / 3)
         plt.clf()
 
-    def scatter_plot(self, x_col: str, y_col: str, path: str | None = None) -> None:
+    def scatter_plot(
+        self,
+        x_col: str,
+        y_col: str,
+        color_col: str | None = None,
+        path: str | None = None,
+    ) -> None:
         """
         Draws a scatter plot of two columns.
 
@@ -48,7 +54,12 @@ class Analyzer:
         plt.xlabel(x_col)
         plt.ylabel(y_col)
         plt.title("Scatter Plot")
-        plt.scatter(x, y)
+        if color_col == None:
+            plt.scatter(x, y)
+        else:
+            color: pd.Series = self.data[color_col]
+            plt.scatter(x, y, c=color)
+
         func_name = "scatter"
         self._save(path, func_name, x_col, y_col)
         plt.show(block=False)
@@ -71,7 +82,7 @@ class Analyzer:
         z: pd.Series = self.data[z_col]
         plt.xlabel(x_col)
         plt.ylabel(y_col)
-        plt.zlabel(z_col)
+        # plt.zlabel(z_col)
         plt.title("Scatter Plot 3D")
         plt.scatter(x, y, z)
         func_name = "scatter_3d"
@@ -116,7 +127,7 @@ class Analyzer:
         z: pd.Series = self.data[z_col]
         plt.xlabel(x_col)
         plt.ylabel(y_col)
-        plt.zlabel(z_col)
+        # plt.zlabel(z_col)
         plt.title("Histogram 3D")
         plt.hist2d(x, y, z)
         func_name = "hist_3d"
