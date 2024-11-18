@@ -32,7 +32,7 @@ class ClusterAnalyzer:
         runtimes: list[float] = []
         for clustering in self.clusterings:
             start: float = time.perf_counter()
-            clustering.fit(self.data)
+            clustering.fit(self.data, self.data["Rainfall"])
             end: float = time.perf_counter()
             delta: float = end - start
             runtimes.append(delta)
@@ -45,12 +45,12 @@ class ClusterAnalyzer:
         :return: List of silhouette score.
         """
         scores: list[float] = []
+        X: pd.DataFrame = self.data
         for clustering in self.clusterings:
-            score: float = silhouette_score(
-                self.data, clustering.fit_predict(self.data)
-            )
-            scores.append(score)
-        pass
+            y = clustering.labels_
+            score: float = silhouette_score(X, y)
+            scores.append(float(score))
+        return scores
 
     def visualize(self, writer: Writer) -> list[Analyzer]:
         """

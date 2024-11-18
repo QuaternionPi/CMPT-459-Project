@@ -6,6 +6,8 @@ from exploratory_analysis import Analyzer
 from preprocessing import preprocess
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
+from sklearn.cluster import KMeans, OPTICS, DBSCAN
+from clustering import ClusterAnalyzer
 
 
 def parse_args() -> tuple[bool, str]:
@@ -24,6 +26,15 @@ def parse_args() -> tuple[bool, str]:
 
     args = parser.parse_args()
     return (args.verbose, args.data)
+
+
+def normalize_column(col: pd.Series) -> pd.Series:
+    return (col - col.mean()) / col.std()
+
+
+def normalize(df: pd.DataFrame) -> pd.DataFrame:
+    # Modified from https://stackoverflow.com/questions/26414913/normalize-columns-of-a-dataframe
+    return df.iloc[:, 0:-1].apply(normalize_column, axis=0)
 
 
 def split(data: pd.DataFrame, test_ratio: int) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -68,14 +79,38 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
     correlations.sort(key=lambda x: x[0])
 
     for variance in variances[:3]:
-        print(variance)
+        writer.write_line(variance)
 
     for variance in variances[-3:]:
-        print(variance)
+        writer.write_line(variance)
 
     for x_col, y_col in column_pairs:
         path = "./eda"
         analyzer.scatter_plot(x_col, y_col, path)
+
+
+def clustering(data: pd.DataFrame, writer: Writer) -> None:
+    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+
+    numerics = data.select_dtypes(include=numeric_types)
+    numerics = normalize(numerics)
+    writer.write_line(len(numerics.index))
+    numerics = numerics.drop(numerics.sample(frac=0.95).index)
+    writer.write_line(len(numerics.index))
+
+    kmeans = KMeans(n_clusters=2)
+    optics = OPTICS()
+    dbscan = DBSCAN(eps=3, min_samples=2)
+
+    cluster_analyzer = ClusterAnalyzer([kmeans, optics, dbscan], numerics, writer)
+    times: list[float] = cluster_analyzer.perform_clusterings()
+    silhouettes: list[float] = cluster_analyzer.silhouette_score()
+    visualizers: list[Analyzer] = cluster_analyzer.visualize(writer)
+
+    writer.write_line("Clustering Runtimes:")
+    writer.write_line(times)
+    writer.write_line("Clustering Silhouette Scores")
+    writer.write_line(silhouettes)
 
 
 def main() -> None:
@@ -85,7 +120,8 @@ def main() -> None:
     (verbose, path) = parse_args()
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, writer)
-    eda(data, writer)
+    # eda(data, writer)
+    clustering(data, writer)
 
     test_ratio = 5
     train, test = split(data, test_ratio=test_ratio)
