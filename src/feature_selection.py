@@ -2,9 +2,13 @@ import pandas as pd
 import numpy as np
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.svm import SVR
-from sklearn.feature_selection import RFE, SelectFromModel
+from sklearn.feature_selection import (
+    RFE,
+    SelectFromModel,
+    SelectKBest,
+)
+from sklearn.feature_selection import mutual_info_classif as mutual_info_classifier
 from sklearn.linear_model import Lasso
-from sklearn.metrics import mutual_info_score
 from writer import Writer
 
 
@@ -57,4 +61,12 @@ def mutual_information(data: pd.DataFrame, writer: Writer) -> pd.DataFrame:
 
     :return: feature-reduced data frame.
     """
-    pass
+    y = data["Rainfall"]
+    X = data.drop(columns=["Rainfall"], inplace=False)
+
+    selector = SelectKBest(mutual_info_classifier, k=5)
+
+    dropped_columns = [
+        col for col, keep in zip(data.columns, selector.get_support()) if keep
+    ]
+    return data.drop(columns=dropped_columns, inplace=False)
