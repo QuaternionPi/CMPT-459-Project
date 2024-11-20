@@ -4,6 +4,11 @@ import argparse
 from writer import Writer
 from exploratory_analysis import Analyzer
 from preprocessing import preprocess
+from feature_selection import (
+    recursive_feature_elimination,
+    lasso_regression,
+    mutual_information,
+)
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.cluster import KMeans, OPTICS, DBSCAN
@@ -34,7 +39,7 @@ def normalize_column(col: pd.Series) -> pd.Series:
 
 def normalize(df: pd.DataFrame) -> pd.DataFrame:
     # Modified from https://stackoverflow.com/questions/26414913/normalize-columns-of-a-dataframe
-    return df.iloc[:, 0:-1].apply(normalize_column, axis=0)
+    return df.iloc[:].apply(normalize_column, axis=0)
 
 
 def split(data: pd.DataFrame, test_ratio: int) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -117,6 +122,22 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
         visualizer.scatter_plot("0", "1", "rains", path=path)
 
 
+def feature_selection(data: pd.DataFrame, writer: Writer) -> None:
+    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+
+    data = data.copy(deep=True)
+    rain_tomorrow = data["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
+    data = data.select_dtypes(include=numeric_types)
+    data = normalize(data)
+
+    data["RainTomorrow"] = rain_tomorrow
+    data = data.drop(data.sample(frac=0.95).index)
+
+    rfe = recursive_feature_elimination(data, writer)
+    lasso = lasso_regression(data, writer)
+    mutual = mutual_information(data, writer)
+
+
 def main() -> None:
     """
     Main function of the program
@@ -125,7 +146,8 @@ def main() -> None:
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, writer)
     # eda(data, writer)
-    clustering(data, writer)
+    # clustering(data, writer)
+    feature_selection(data, writer)
 
     test_ratio = 5
     train, test = split(data, test_ratio=test_ratio)
