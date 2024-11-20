@@ -47,3 +47,32 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 ![KMeans Clustering](./kmeans/scatter-0-1.png)
 ![OPTICS Clustering](./optics/scatter-0-1.png)
 ![DBSCAN Clustering](./dbscan/scatter-0-1.png)
+
+
+## 6. Feature Selection
+1. We selected 3 feature selection methods
+   - Recursive Feature Elimination
+   - Lasso Regression
+   - Mutual Information
+2. We ran these clustering algorithms to get out 5 columns
+
+### 6.1 Selected Features
+| Columns Kept    | Recursive Feature | Lasso Regression | Mutual Information | Fraction |
+| --------------- | ----------------- | ---------------- | ------------------ | -------- |
+| Rainfall        | X                 | X                | X                  | $3/3$    |
+| Wind Gust Speed | X                 | X                |                    | $2/3$    |
+| Wind Speed 3 pm |                   | X                |                    | $1/3$    |
+| Humidity 9 am   |                   |                  | X                  | $1/3$    |
+| Humidity 3 pm   | X                 | X                | X                  | $3/3$    |
+| Pressure 9 am   | X                 |                  | X                  | $2/3$    |
+| Pressure 3 pm   | X                 | X                | X                  | $3/3$    |
+
+### 6.2 Discussion of Selected Features
+Three features are selected by all three models. 
+These features are Rainfall, Humidity at 3 pm, and Pressure at 3 pm.
+- Rainfall today is an obvious predictor of rainfall tomorrow
+- Humidity and pressure both make sense for weather prediction
+
+Humidity and pressure were both more commonly referenced at 3 pm vs 9 am.
+This implies weather conditions later in the day have stronger predictive powers than those later in the day.
+Of course this is obvious to us humans, but its cool the feature selection figured it out.
