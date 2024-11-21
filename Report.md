@@ -43,7 +43,13 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 3. We found runtimes, Silhouette scores
 4. Created visualizations
 
-### 4.1 Plots
+### 4.1 Clustering Performance
+| Metric            | KMeans | OPTICS | DBSCAN |
+| ----------------- | ------ | ------ | ------ |
+| Runtime           | 0.187  | 11.191 | 0.097  |
+| Silhouette Scores | 0.172  | -0.392 | 0.581  |
+
+### 4.2 Plots
 ![KMeans Clustering](./kmeans/scatter-0-1.png)
 ![OPTICS Clustering](./optics/scatter-0-1.png)
 ![DBSCAN Clustering](./dbscan/scatter-0-1.png)

@@ -108,7 +108,7 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
-    dbscan = DBSCAN(eps=3, min_samples=2)
+    dbscan = DBSCAN(eps=4, min_samples=2)
 
     cluster_analyzer = ClusterAnalyzer([kmeans, optics, dbscan], numerics, writer)
     times: list[float] = cluster_analyzer.perform_clusterings()
@@ -156,8 +156,8 @@ def main() -> None:
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, writer)
     # eda(data, writer)
-    # clustering(data, writer)
-    feature_selection(data, writer)
+    clustering(data, writer)
+    # feature_selection(data, writer)
 
     test_ratio = 5
     train, test = split(data, test_ratio=test_ratio)
