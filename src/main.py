@@ -123,7 +123,10 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
     paths = ["./kmeans", "./optics", "./dbscan"]
     for visualizer, path in zip(visualizers, paths):
         visualizer.scatter_plot(
-            "0", "1", ("rains", ["Dry", "Rain", "Error", "Outlier"]), path=path
+            "0",
+            "1",
+            ("rains", []),
+            path=path,
         )
 
 
@@ -150,7 +153,7 @@ def main() -> None:
     (verbose, path) = parse_args()
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, writer)
-    eda(data, writer)
+    # eda(data, writer)
     clustering(data, writer)
     feature_selection(data, writer)
 
