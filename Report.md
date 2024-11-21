@@ -31,9 +31,9 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 ![Scatter plot of Max Temp vs Rainfall](./eda/scatter-MaxTemp-Rainfall.png)
 ![Scatter plot of Max Temp vs Pressure at 9 am](./eda/scatter-MaxTemp-Pressure9am.png)
 ![Scatter plot of Pressure at 9 am vs Pressure at 3 pm](./eda/scatter-Pressure9am-Pressure3pm.png)
-![Scatter plot of Location Encoding vs Pressure at 9 am](./eda/scatter-Location_enc-Pressure9am.png)
+![Scatter plot of Location Encoding vs Pressure at 9 am](./eda/scatter-Pressure9am-Location_enc.png)
 ![Scatter plot of Wind Gust Speed vs Pressure at 9 am](./eda/scatter-WindGustSpeed-Pressure9am.png)
-![Scatter plot of Location Encoding vs Wind Gust Speed](./eda/scatter-Location_enc-WindGustSpeed.png)
+![Scatter plot of Location Encoding vs Wind Gust Speed](./eda/scatter-WindGustSpeed-Location_enc.png)
 
 ## 4. Clustering
 1. Gather clustering algorithms

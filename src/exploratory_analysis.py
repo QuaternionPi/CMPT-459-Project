@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 from pathlib import Path
 from writer import Writer
+from matplotlib.colors import ListedColormap
 
 
 class Analyzer:
@@ -39,7 +40,7 @@ class Analyzer:
         self,
         x_col: str,
         y_col: str,
-        color_col: str | None = None,
+        classes: str | None = None,
         path: str | None = None,
     ) -> None:
         """
@@ -54,11 +55,20 @@ class Analyzer:
         plt.xlabel(x_col)
         plt.ylabel(y_col)
         plt.title("Scatter Plot")
-        if color_col == None:
-            plt.scatter(x, y)
+
+        sizes = [1.5 for i in range(len(x))]
+
+        if classes == None:
+            scatter = plt.scatter(x, y, s=sizes)
         else:
-            color: pd.Series = self.data[color_col]
-            plt.scatter(x, y, c=color)
+            class_col = classes[0]
+            labels = classes[1]
+
+            color: list = list(self.data[class_col])
+            cmap = ListedColormap(["orange", "green", "red", "blue"])
+
+            scatter = plt.scatter(x, y, s=sizes, c=color, cmap=cmap)
+            plt.legend(handles=scatter.legend_elements()[0], labels=labels)
 
         func_name = "scatter"
         self._save(path, func_name, x_col, y_col)
