@@ -102,9 +102,9 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     numerics = data.select_dtypes(include=numeric_types)
     numerics = normalize(numerics)
-    writer.write_line(len(numerics.index))
-    numerics = numerics.drop(numerics.sample(frac=0.95).index)
-    writer.write_line(len(numerics.index))
+    writer.write_line(f"Total entires:{len(numerics.index)}")
+    numerics = numerics.drop(numerics.sample(frac=0.975).index)
+    writer.write_line(f"Entries kept for clustering: {len(numerics.index)}")
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
@@ -134,12 +134,14 @@ def feature_selection(data: pd.DataFrame, writer: Writer) -> None:
     numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
 
     data = data.copy(deep=True)
-    rain_tomorrow = data["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
     data = data.select_dtypes(include=numeric_types)
+    rain_tomorrow = data["RainTomorrow"]
+    data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
-
     data["RainTomorrow"] = rain_tomorrow
-    data = data.drop(data.sample(frac=0.95).index)
+    writer.write_line(f"Total entires:{len(data.index)}")
+    data = data.drop(data.sample(frac=0.975).index)
+    writer.write_line(f"Entries kept for feature selection: {len(data.index)}")
 
     rfe = recursive_feature_elimination(data, writer)
     lasso = lasso_regression(data, writer)
@@ -154,7 +156,7 @@ def main() -> None:
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, writer)
     # eda(data, writer)
-    clustering(data, writer)
+    # clustering(data, writer)
     feature_selection(data, writer)
 
     test_ratio = 5
