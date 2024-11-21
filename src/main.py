@@ -56,8 +56,9 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
     """
     numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
 
-    numerics = data.select_dtypes(include=numeric_types)
-    numeric_columns: list[str] = numerics.columns
+    data = data.select_dtypes(include=numeric_types)
+    numeric_columns: list[str] = list(data.columns)
+    numeric_columns.remove("RainTomorrow")
     columns_count = len(numeric_columns)
     column_pairs = [
         (numeric_columns[x], numeric_columns[y])
@@ -73,7 +74,7 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
         if x < y and y < z
     ]
 
-    analyzer: Analyzer = Analyzer(numerics, writer)
+    analyzer: Analyzer = Analyzer(data, writer)
     variances: list[tuple[float, str]] = [
         (analyzer.variance(col), col) for col in numeric_columns
     ]
@@ -91,7 +92,9 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
 
     for x_col, y_col in column_pairs:
         path = "./eda"
-        analyzer.scatter_plot(x_col, y_col, path=path)
+        analyzer.scatter_plot(
+            x_col, y_col, ("RainTomorrow", ["Dry", "Rain"]), path=path
+        )
 
 
 def clustering(data: pd.DataFrame, writer: Writer) -> None:
@@ -99,13 +102,13 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     numerics = data.select_dtypes(include=numeric_types)
     numerics = normalize(numerics)
-    writer.write_line(len(numerics.index))
-    numerics = numerics.drop(numerics.sample(frac=0.95).index)
-    writer.write_line(len(numerics.index))
+    writer.write_line(f"Total entires: {len(numerics.index)}")
+    numerics = numerics.drop(numerics.sample(frac=0.975).index)
+    writer.write_line(f"Entries kept for clustering: {len(numerics.index)}")
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
-    dbscan = DBSCAN(eps=3, min_samples=2)
+    dbscan = DBSCAN(eps=4, min_samples=2)
 
     cluster_analyzer = ClusterAnalyzer([kmeans, optics, dbscan], numerics, writer)
     times: list[float] = cluster_analyzer.perform_clusterings()
@@ -119,23 +122,39 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     paths = ["./kmeans", "./optics", "./dbscan"]
     for visualizer, path in zip(visualizers, paths):
-        visualizer.scatter_plot("0", "1", "rains", path=path)
+        visualizer.scatter_plot(
+            "0",
+            "1",
+            ("rains", []),
+            path=path,
+        )
 
 
-def feature_selection(data: pd.DataFrame, writer: Writer) -> None:
+def feature_selection(
+    data: pd.DataFrame, writer: Writer
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """
+    Selects features based on several methods
+
+    :return: (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
+    """
     numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
 
     data = data.copy(deep=True)
-    rain_tomorrow = data["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
     data = data.select_dtypes(include=numeric_types)
+    rain_tomorrow = data["RainTomorrow"]
+    data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
-
     data["RainTomorrow"] = rain_tomorrow
-    data = data.drop(data.sample(frac=0.95).index)
+    writer.write_line(f"Total entires: {len(data.index)}")
+    data = data.drop(data.sample(frac=0.975).index)
+    writer.write_line(f"Entries kept for feature selection: {len(data.index)}")
 
     rfe = recursive_feature_elimination(data, writer)
     lasso = lasso_regression(data, writer)
     mutual = mutual_information(data, writer)
+
+    return rfe, lasso, mutual
 
 
 def main() -> None:
@@ -147,7 +166,7 @@ def main() -> None:
     data = preprocess(path, writer)
     # eda(data, writer)
     # clustering(data, writer)
-    feature_selection(data, writer)
+    rfe, lasso, mutual = feature_selection(data, writer)
 
     test_ratio = 5
     train, test = split(data, test_ratio=test_ratio)

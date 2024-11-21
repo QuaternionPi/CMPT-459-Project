@@ -36,16 +36,23 @@ def preprocess(path: str, writer: Writer) -> pd.DataFrame:
             df[col] = df[col].fillna(mean)
 
         else:  # categorical, impute with mode
-            mean = df[col].mode()[0]  # return most frequent mode, the 0th index
-            df[col] = df[col].fillna(mean)
+            mode = df[col].mode()[0]  # return most frequent mode, the 0th index
+            df[col] = df[col].fillna(mode)
 
     # Label Encoding for Location
     # reference for label encoding: https://www.geeksforgeeks.org/ml-label-encoding-of-datasets-in-python/
     label_encoder = preprocessing.LabelEncoder()
 
     # Encode labels in column 'species'.
-    encoded_col = label_encoder.fit_transform(df["Location"])
+    df["Location_enc"] = label_encoder.fit_transform(df["Location"])
 
-    # reference for inserting a column at index: https://stackoverflow.com/questions/18674064/how-do-i-insert-a-column-at-a-specific-column-index-in-pandas
-    df.insert(loc=1, column="Location_enc", value=encoded_col)
+    # Change rain tomorrow from strings to numerics
+    df["RainTomorrow"] = df["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
+
+    # Year and month https://stackoverflow.com/questions/25146121/extracting-just-month-and-year-separately-from-pandas-datetime-column
+    df["Year"] = pd.DatetimeIndex(df["Date"]).year
+    df["Month"] = pd.DatetimeIndex(df["Date"]).month
+
+    # Remove redundant columns
+    df = df.drop(columns=["Location", "Date"])
     return df
