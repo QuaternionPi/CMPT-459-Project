@@ -2,17 +2,22 @@ import pandas as pd
 import numpy as np
 import argparse
 from writer import Writer
-from exploratory_analysis import Analyzer
 from preprocessing import preprocess
+from exploratory_analysis import Analyzer
+from clustering import ClusterAnalyzer
 from feature_selection import (
     recursive_feature_elimination,
     lasso_regression,
     mutual_information,
 )
+from classification import classify
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.cluster import KMeans, OPTICS, DBSCAN
-from clustering import ClusterAnalyzer
+from sklearn.base import ClassifierMixin as SKLearnClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC as SupportVectorClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 
 def parse_args() -> tuple[bool, str]:
@@ -40,11 +45,6 @@ def normalize_column(col: pd.Series) -> pd.Series:
 def normalize(df: pd.DataFrame) -> pd.DataFrame:
     # Modified from https://stackoverflow.com/questions/26414913/normalize-columns-of-a-dataframe
     return df.iloc[:].apply(normalize_column, axis=0)
-
-
-def split(data: pd.DataFrame, test_ratio: int) -> tuple[pd.DataFrame, pd.DataFrame]:
-    test_size = 1 / test_ratio
-    return train_test_split(data, test_size=test_size)
 
 
 def eda(data: pd.DataFrame, writer: Writer) -> None:
@@ -157,6 +157,29 @@ def feature_selection(
     return rfe, lasso, mutual
 
 
+def classification(datasets: dict[str, pd.DataFrame]) -> None:
+    k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30)]
+    support_vectors = [
+        SupportVectorClassifier(C=C, kernel=kernel)
+        for C in range(1, 10)
+        for kernel in ["linear", "poly", "rbf", "sigmoid", "precomputed"]
+    ]
+    random_forests = [RandomForestClassifier(n_trees) for n_trees in range(1, 20, 2)]
+
+    classifier_sets = [k_nearest_neighbours, support_vectors, random_forests]
+    classifiers: list[SKLearnClassifier] = [
+        classifier
+        for classifier_set in classifier_sets
+        for classifier in classifier_set
+    ]
+
+    scores = [
+        (classify(datasets[dataset], classifier), dataset, classifier)
+        for dataset in datasets.keys()
+        for classifier in classifiers
+    ]
+
+
 def main() -> None:
     """
     Main function of the program
@@ -168,8 +191,8 @@ def main() -> None:
     # clustering(data, writer)
     rfe, lasso, mutual = feature_selection(data, writer)
 
-    test_ratio = 5
-    train, test = split(data, test_ratio=test_ratio)
+    datasets = {"all": data, "rfe": rfe, "lasso": lasso, "mutual": mutual}
+    classification(datasets)
 
 
 if __name__ == "__main__":
