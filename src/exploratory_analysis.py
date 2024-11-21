@@ -68,7 +68,8 @@ class Analyzer:
             cmap = ListedColormap(["orange", "green", "red", "blue"])
 
             scatter = plt.scatter(x, y, s=sizes, c=color, cmap=cmap)
-            plt.legend(handles=scatter.legend_elements()[0], labels=labels)
+            if len(labels) != 0:
+                plt.legend(handles=scatter.legend_elements()[0], labels=labels)
 
         func_name = "scatter"
         self._save(path, func_name, x_col, y_col)

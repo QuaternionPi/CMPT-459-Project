@@ -102,7 +102,7 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     numerics = data.select_dtypes(include=numeric_types)
     numerics = normalize(numerics)
-    writer.write_line(f"Total entires:{len(numerics.index)}")
+    writer.write_line(f"Total entires: {len(numerics.index)}")
     numerics = numerics.drop(numerics.sample(frac=0.975).index)
     writer.write_line(f"Entries kept for clustering: {len(numerics.index)}")
 
@@ -139,7 +139,7 @@ def feature_selection(data: pd.DataFrame, writer: Writer) -> None:
     data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
     data["RainTomorrow"] = rain_tomorrow
-    writer.write_line(f"Total entires:{len(data.index)}")
+    writer.write_line(f"Total entires: {len(data.index)}")
     data = data.drop(data.sample(frac=0.975).index)
     writer.write_line(f"Entries kept for feature selection: {len(data.index)}")
 
