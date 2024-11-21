@@ -130,7 +130,14 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
         )
 
 
-def feature_selection(data: pd.DataFrame, writer: Writer) -> None:
+def feature_selection(
+    data: pd.DataFrame, writer: Writer
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """
+    Selects features based on several methods
+
+    :return: (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
+    """
     numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
 
     data = data.copy(deep=True)
@@ -147,6 +154,8 @@ def feature_selection(data: pd.DataFrame, writer: Writer) -> None:
     lasso = lasso_regression(data, writer)
     mutual = mutual_information(data, writer)
 
+    return rfe, lasso, mutual
+
 
 def main() -> None:
     """
@@ -156,8 +165,8 @@ def main() -> None:
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, writer)
     # eda(data, writer)
-    clustering(data, writer)
-    # feature_selection(data, writer)
+    # clustering(data, writer)
+    rfe, lasso, mutual = feature_selection(data, writer)
 
     test_ratio = 5
     train, test = split(data, test_ratio=test_ratio)
