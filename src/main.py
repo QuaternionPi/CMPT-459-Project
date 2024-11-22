@@ -171,12 +171,31 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
         for classifier in classifier_set
     ]
 
-    scores = [
-        (test(datasets[dataset], classifier, writer), dataset, classifier)
-        for dataset in datasets.keys()
+    runs = [
+        (dataset_name, classifier)
+        for dataset_name in datasets.keys()
         for classifier in classifiers
     ]
-    sorted(scores, key=lambda x: x[0])
+    results = []
+    n_test = 0
+
+    for dataset_name, classifier in runs:
+        writer.write_line_verbose(f"Running test number {n_test}")
+        n_test += 1
+
+        dataset = datasets[dataset_name]
+        result = test(dataset, classifier, writer)
+        item = (result, dataset_name, classifier)
+        results.append(item)
+
+    sorted(results, key=lambda x: x[0])
+
+    for result in results:
+        score = float(result[0])
+        dataset = str.ljust(result[1], 6)
+        classifier = result[2]
+        line = f"Score: {score} | Dataset: {dataset} | Classifier: {classifier}"
+        writer.write_line(line)
 
 
 def main() -> None:
