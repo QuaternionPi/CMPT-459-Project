@@ -18,7 +18,7 @@ from sklearn.svm import SVC as SupportVectorClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 
-def parse_args() -> tuple[bool, str]:
+def parse_args() -> tuple[bool, str, float]:
     """
     Parses command line arguments.
 
@@ -31,9 +31,15 @@ def parse_args() -> tuple[bool, str]:
     parser.add_argument(
         "--data", "-d", type=str, help="path to data", default="weatherAUS.csv"
     )
+    parser.add_argument(
+        "--data-reduction",
+        type=float,
+        help="amount of data to exclude i.e. =10 keeps only 1 in 10 data points",
+        default=10,
+    )
 
     args = parser.parse_args()
-    return (args.verbose, args.data)
+    return (args.verbose, args.data, args.data_reduction)
 
 
 def normalize_column(col: pd.Series) -> pd.Series:
@@ -202,9 +208,13 @@ def main() -> None:
     """
     Main function of the program
     """
-    (verbose, path) = parse_args()
+    (verbose, path, data_reduction) = parse_args()
+
+    if data_reduction < 1:
+        data_reduction = 1
+
     writer: Writer = Writer(verbose, None)
-    data = preprocess(path, writer)
+    data = preprocess(path, data_reduction, writer)
     # eda(data, writer)
     # clustering(data, writer)
     rfe, lasso, mutual = feature_selection(data, writer)
