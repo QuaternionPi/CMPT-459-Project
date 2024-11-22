@@ -183,20 +183,12 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
 
     ensembles = [
         VotingClassifier(
-            [
-                (str(i), result.classifier)
-                for i, result in enumerate(results[-k:])
-                if result.dataset_name == "all"
-            ]
+            [(str(k - i), result.classifier) for i, result in enumerate(results[-k:])]
         )
         for k in range(3, 9, 2)
     ]
 
-    runs = [
-        (dataset_name, classifier)
-        for dataset_name in datasets.keys()
-        for classifier in ensembles
-    ]
+    runs = [("all", classifier) for classifier in ensembles]
     results += batch_test(runs, datasets, writer)
 
     results = sorted(results, key=lambda x: x.accuracy)
