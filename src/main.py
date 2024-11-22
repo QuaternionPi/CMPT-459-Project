@@ -106,9 +106,6 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     numerics = data.select_dtypes(include=numeric_types)
     numerics = normalize(numerics)
-    writer.write_line(f"Total entires: {len(numerics.index)}")
-    numerics = numerics.drop(numerics.sample(frac=0.975).index)
-    writer.write_line(f"Entries kept for clustering: {len(numerics.index)}")
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
@@ -150,9 +147,6 @@ def feature_selection(
     data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
     data["RainTomorrow"] = rain_tomorrow
-    writer.write_line(f"Total entires: {len(data.index)}")
-    data = data.drop(data.sample(frac=0.975).index)
-    writer.write_line(f"Entries kept for feature selection: {len(data.index)}")
 
     rfe = recursive_feature_elimination(data, writer)
     lasso = lasso_regression(data, writer)
@@ -162,11 +156,11 @@ def feature_selection(
 
 
 def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
-    k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30)]
+    k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30, 2)]
     support_vectors = [
         SupportVectorClassifier(C=C, kernel=kernel)
         for C in range(1, 10)
-        for kernel in ["linear", "poly", "rbf", "sigmoid", "precomputed"]
+        for kernel in ["linear", "poly", "rbf", "sigmoid"]
     ]
     random_forests = [RandomForestClassifier(n_trees) for n_trees in range(1, 20, 2)]
 
