@@ -15,7 +15,7 @@ from sklearn.cluster import KMeans, OPTICS, DBSCAN
 from sklearn.base import ClassifierMixin as SKLearnClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC as SupportVectorClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 
 
 def parse_args() -> tuple[bool, str, float]:
@@ -179,6 +179,27 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
     results = []
     n_test = 0
 
+    for dataset_name, classifier in runs:
+        writer.write_line_verbose(f"Running test number {n_test}")
+        n_test += 1
+
+        dataset = datasets[dataset_name]
+        score = round(float(test(dataset, classifier, writer)), 4)
+        item = (score, dataset_name, classifier)
+        results.append(item)
+
+    results = sorted(results, key=lambda x: x[0])
+
+    ensembles = [
+        VotingClassifier([(str(i), result[2]) for i, result in enumerate(results[-k:])])
+        for k in range(3, 9, 2)
+    ]
+
+    runs = [
+        (dataset_name, classifier)
+        for dataset_name in datasets.keys()
+        for classifier in ensembles
+    ]
     for dataset_name, classifier in runs:
         writer.write_line_verbose(f"Running test number {n_test}")
         n_test += 1
