@@ -74,7 +74,7 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 | Pressure 3 pm   | X                 | X                | X                  | $3/3$    |
 
 ### 6.2 Discussion of Selected Features
-Three features are selected by all three models. 
+Three features are selected by all of the three models. 
 These features are Rainfall, Humidity at 3 pm, and Pressure at 3 pm.
 - Rainfall today is an obvious predictor of rainfall tomorrow
 - Humidity and pressure both make sense for weather prediction
@@ -82,6 +82,31 @@ These features are Rainfall, Humidity at 3 pm, and Pressure at 3 pm.
 Humidity and pressure were both more commonly referenced at 3 pm vs 9 am.
 This implies weather conditions later in the day have stronger predictive powers than those later in the day.
 Of course this is obvious to us humans, but its cool the feature selection figured it out.
+
+## 7 Classification
+1. We choose three base classifiers, and to make ensemble classifiers out of the best classifiers
+   - Support Vector Machines
+   - K Nearest Neighbours
+   - Random Forest Classifiers
+   - Voting Classifiers of size 3, 5, and 7
+2. We chose 5 fold cross validation for performance
+3. For metrics we picked 4 and sorted by accuracy
+   - Accuracy
+   - Precision
+   - Recall
+   - F1 score
+4. Tests were run over 4 different datasets
+   - All of the data 
+   - Features picked by RFE
+   - Features picked by Mutual Information
+   - Features picked by Lasso
+5. Bad Results
+   - Support Vector machines did terribly, especially with `kernel = 'sigmoid'`
+   - Random forests with `n_neighbours = 1` were also quite bad
+   - Mutual Information tended to produce the worst classification result
+6. Good Results
+   - The best performing classifiers were the ensembles of size 3 and 5
+   - The best 5 base classifiers were all KNNs with `n_neighbours > 15`
 
 ## Appendix A - Classification results
 | Accuracy | Precision | Recall | F1 | Dataset | Classifier |
