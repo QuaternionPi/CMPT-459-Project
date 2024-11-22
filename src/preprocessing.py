@@ -4,7 +4,7 @@ from writer import Writer
 from sklearn import preprocessing
 
 
-def preprocess(path: str, writer: Writer) -> pd.DataFrame:
+def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame:
     """
     Preprocess data.
 
@@ -14,6 +14,9 @@ def preprocess(path: str, writer: Writer) -> pd.DataFrame:
     """
     df: pd.DataFrame = pd.read_csv(path)
     df = df.drop(columns=["Evaporation", "Sunshine", "Cloud9am", "Cloud3pm"])
+
+    frac = 1 - 1 / data_reduction
+    df = df.drop(df.sample(frac=frac, random_state=1).index)
 
     int_dtypes = [
         np.int8,

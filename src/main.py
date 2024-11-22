@@ -1,21 +1,25 @@
 import pandas as pd
-import numpy as np
 import argparse
 from writer import Writer
-from exploratory_analysis import Analyzer
 from preprocessing import preprocess
+from exploratory_analysis import Analyzer
+from clustering import ClusterAnalyzer
 from feature_selection import (
     recursive_feature_elimination,
     lasso_regression,
     mutual_information,
 )
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import KFold
+from classification import batch_test, Result
 from sklearn.cluster import KMeans, OPTICS, DBSCAN
-from clustering import ClusterAnalyzer
+from sklearn.base import ClassifierMixin as SKLearnClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC as SupportVectorClassifier
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.exceptions import UndefinedMetricWarning
+import warnings
 
 
-def parse_args() -> tuple[bool, str]:
+def parse_args() -> tuple[bool, str, float]:
     """
     Parses command line arguments.
 
@@ -28,9 +32,15 @@ def parse_args() -> tuple[bool, str]:
     parser.add_argument(
         "--data", "-d", type=str, help="path to data", default="weatherAUS.csv"
     )
+    parser.add_argument(
+        "--data-reduction",
+        type=float,
+        help="amount of data to exclude i.e. =10 keeps only 1 in 10 data points",
+        default=10,
+    )
 
     args = parser.parse_args()
-    return (args.verbose, args.data)
+    return (args.verbose, args.data, args.data_reduction)
 
 
 def normalize_column(col: pd.Series) -> pd.Series:
@@ -40,11 +50,6 @@ def normalize_column(col: pd.Series) -> pd.Series:
 def normalize(df: pd.DataFrame) -> pd.DataFrame:
     # Modified from https://stackoverflow.com/questions/26414913/normalize-columns-of-a-dataframe
     return df.iloc[:].apply(normalize_column, axis=0)
-
-
-def split(data: pd.DataFrame, test_ratio: int) -> tuple[pd.DataFrame, pd.DataFrame]:
-    test_size = 1 / test_ratio
-    return train_test_split(data, test_size=test_size)
 
 
 def eda(data: pd.DataFrame, writer: Writer) -> None:
@@ -102,9 +107,6 @@ def clustering(data: pd.DataFrame, writer: Writer) -> None:
 
     numerics = data.select_dtypes(include=numeric_types)
     numerics = normalize(numerics)
-    writer.write_line(f"Total entires: {len(numerics.index)}")
-    numerics = numerics.drop(numerics.sample(frac=0.975).index)
-    writer.write_line(f"Entries kept for clustering: {len(numerics.index)}")
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
@@ -146,9 +148,6 @@ def feature_selection(
     data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
     data["RainTomorrow"] = rain_tomorrow
-    writer.write_line(f"Total entires: {len(data.index)}")
-    data = data.drop(data.sample(frac=0.975).index)
-    writer.write_line(f"Entries kept for feature selection: {len(data.index)}")
 
     rfe = recursive_feature_elimination(data, writer)
     lasso = lasso_regression(data, writer)
@@ -157,19 +156,89 @@ def feature_selection(
     return rfe, lasso, mutual
 
 
+def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
+    k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30, 2)]
+    support_vectors = [
+        SupportVectorClassifier(C=C, kernel=kernel)
+        for C in range(1, 10)
+        for kernel in ["linear", "poly", "rbf", "sigmoid"]
+    ]
+    random_forests = [RandomForestClassifier(n_trees) for n_trees in range(1, 20, 2)]
+
+    classifier_sets = [k_nearest_neighbours, support_vectors, random_forests]
+    classifiers: list[SKLearnClassifier] = [
+        classifier
+        for classifier_set in classifier_sets
+        for classifier in classifier_set
+    ]
+
+    runs = [
+        (dataset_name, classifier)
+        for dataset_name in datasets.keys()
+        for classifier in classifiers
+    ]
+    results: list[Result] = batch_test(runs, datasets, writer)
+
+    results = sorted(results, key=lambda x: x.accuracy)
+
+    ensembles = [
+        VotingClassifier(
+            [(str(k - i), result.classifier) for i, result in enumerate(results[-k:])]
+        )
+        for k in range(3, 9, 2)
+    ]
+
+    runs = [("all", classifier) for classifier in ensembles]
+    results += batch_test(runs, datasets, writer)
+
+    results = sorted(results, key=lambda x: x.accuracy)
+
+    writer.write_line("| Accuracy | Precision | Recall | F1 | Dataset | Classifier |")
+    writer.write_line("| -------- | --------- | ------ | -- | ------- | ---------- |")
+    for result in results:
+        accuracy = round(float(result.accuracy), 4)
+        precision = round(float(result.precision), 4)
+        recall = round(float(result.recall), 4)
+        f1 = round(float(result.f1), 4)
+
+        dataset = str.ljust(result.dataset_name, 6)
+        classifier = result.classifier
+
+        line = (
+            f"| {accuracy} | {precision} | {recall} | {f1} | {dataset} | {classifier} |"
+        )
+        writer.write_line(line)
+
+
 def main() -> None:
     """
     Main function of the program
     """
-    (verbose, path) = parse_args()
+    (verbose, path, data_reduction) = parse_args()
+
+    if data_reduction < 1:
+        data_reduction = 1
+
+    if not verbose:
+        warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
+
     writer: Writer = Writer(verbose, None)
-    data = preprocess(path, writer)
+    data = preprocess(path, data_reduction, writer)
     # eda(data, writer)
     # clustering(data, writer)
     rfe, lasso, mutual = feature_selection(data, writer)
 
-    test_ratio = 5
-    train, test = split(data, test_ratio=test_ratio)
+    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+
+    numerics = data.select_dtypes(include=numeric_types)
+
+    datasets = {
+        "all": numerics,
+        "rfe": numerics[rfe.columns],
+        "lasso": numerics[lasso.columns],
+        "mutual": numerics[mutual.columns],
+    }
+    classification(datasets, writer)
 
 
 if __name__ == "__main__":

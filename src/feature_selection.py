@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.svm import SVR
 from sklearn.feature_selection import (
@@ -48,7 +47,7 @@ def lasso_regression(data: pd.DataFrame, writer: Writer) -> pd.DataFrame:
     estimator = StandardScaler()
     estimator.fit(X)
 
-    lasso = Lasso(alpha=0.02, max_iter=10000)
+    lasso = Lasso(alpha=0.01, max_iter=10000)
 
     selector = SelectFromModel(lasso)
     selector = selector.fit(estimator.transform(X), y)
