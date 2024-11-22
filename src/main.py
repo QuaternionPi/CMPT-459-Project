@@ -10,9 +10,7 @@ from feature_selection import (
     lasso_regression,
     mutual_information,
 )
-from classification import classify
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import KFold
+from classification import test
 from sklearn.cluster import KMeans, OPTICS, DBSCAN
 from sklearn.base import ClassifierMixin as SKLearnClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -157,7 +155,7 @@ def feature_selection(
     return rfe, lasso, mutual
 
 
-def classification(datasets: dict[str, pd.DataFrame]) -> None:
+def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
     k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30)]
     support_vectors = [
         SupportVectorClassifier(C=C, kernel=kernel)
@@ -174,10 +172,11 @@ def classification(datasets: dict[str, pd.DataFrame]) -> None:
     ]
 
     scores = [
-        (classify(datasets[dataset], classifier), dataset, classifier)
+        (test(datasets[dataset], classifier, writer), dataset, classifier)
         for dataset in datasets.keys()
         for classifier in classifiers
     ]
+    sorted(scores, key=lambda x: x[0])
 
 
 def main() -> None:
@@ -191,8 +190,17 @@ def main() -> None:
     # clustering(data, writer)
     rfe, lasso, mutual = feature_selection(data, writer)
 
-    datasets = {"all": data, "rfe": rfe, "lasso": lasso, "mutual": mutual}
-    classification(datasets)
+    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+
+    numerics = data.select_dtypes(include=numeric_types)
+
+    datasets = {
+        "all": numerics,
+        "rfe": numerics[rfe.columns],
+        "lasso": numerics[lasso.columns],
+        "mutual": numerics[mutual.columns],
+    }
+    classification(datasets, writer)
 
 
 if __name__ == "__main__":
