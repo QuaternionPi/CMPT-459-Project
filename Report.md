@@ -101,12 +101,41 @@ Of course this is obvious to us humans, but its cool the feature selection figur
    - Features picked by Mutual Information
    - Features picked by Lasso
 5. Bad Results
-   - Support Vector machines did terribly, especially with `kernel = 'sigmoid'`
+   - Support Vector machines did terribly
    - Random forests with `n_neighbours = 1` were also quite bad
    - Mutual Information tended to produce the worst classification result
 6. Good Results
    - The best performing classifiers were the ensembles of size 3 and 5
+   - The best 5 base classifiers were all KNNs
+
+## 8 Hyperparameter Tuning
+### Support Vector Machines
+- SVMs had two tuned hyper parameters
+- `C` The regularization strength
+  - The best value was `C=6`, these has better accuracy than other SVMs
+- `kernel` What kernel function should the SVM use
+  - The worst was `kernel = 'sigmoid'`
+  - The best was `kernel='linear'`
+  - This is likely because the corrections between features get lost when transformed 
+
+### K Nearest Neighbours
+- KNNs have one tuned hyper parameter
+- `n_neighbours` How many neighbours should this check? 
    - The best 5 base classifiers were all KNNs with `n_neighbours > 15`
+   - This is quite impressive given the data set
+
+### Random Forest Classifiers
+- Random Forests have only one hyper parameter tuned
+- `n_estimators` How many decision trees should be trained?
+  - Higher numbers of decision trees do better overall
+  - KNNs with `n_estimators=17, 19` were in the top 15 of all classifiers
+
+### Ensemble Classifiers
+- We used Voting Classifiers of sizes 3, 5, and 7
+- Size 3 did the best of all of them
+- Size 5 was right behind
+- Sizes 3 and 5 did better than all other classifiers
+- Size 7 interestingly did worse than the best 3 base classifiers
 
 ## Appendix A - Classification results
 | Accuracy | Precision | Recall | F1 | Dataset | Classifier |
