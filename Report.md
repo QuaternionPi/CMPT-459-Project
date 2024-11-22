@@ -18,8 +18,9 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 4. We have deferred normalization of numerical features until it is needed
    - EDA works better if we have non-normalized features
 5. Our dataset is large enough we don't need to create synthetic data
-6. The minority class (it rains) is about a quarter of the data set, it doesn't need augmentation
-7. Our data has insufficient dimensionality to require PCA
+6. We have parameterized data reduction and run our tests with `--data-reduction=20`
+7. The minority class (it rains) is about a quarter of the data set, it doesn't need augmentation
+8. Our data has insufficient dimensionality to require PCA
 
 ## 3. Exploratory Data Analysis
 1. Find high and low variances, correlations in the data set.
