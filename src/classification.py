@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from sklearn.base import ClassifierMixin as SKLearnClassifier
 from sklearn.model_selection import KFold, cross_val_score
 from writer import Writer
@@ -11,7 +10,7 @@ def test(data: pd.DataFrame, classifier: SKLearnClassifier, writer: Writer) -> f
     y = data["RainTomorrow"]
     X = data.drop(columns=["RainTomorrow"], inplace=False)
 
-    scores: np.ndarray = cross_val_score(
+    scores = cross_val_score(
         classifier,
         X,
         y,

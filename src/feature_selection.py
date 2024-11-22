@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.svm import SVR
 from sklearn.feature_selection import (

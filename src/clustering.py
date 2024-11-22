@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from sklearn.base import ClusterMixin as SKLearnClustering
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA

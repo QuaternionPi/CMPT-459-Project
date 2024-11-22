@@ -1,7 +1,4 @@
 import pandas as pd
-import numpy as np
-from sklearn.neighbors import LocalOutlierFactor
-from sklearn.decomposition import PCA
 from writer import Writer
 from exploratory_analysis import Analyzer
 

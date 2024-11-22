@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import argparse
 from writer import Writer
 from preprocessing import preprocess
