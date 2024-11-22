@@ -9,12 +9,14 @@ from feature_selection import (
     lasso_regression,
     mutual_information,
 )
-from classification import test
+from classification import batch_test, Result
 from sklearn.cluster import KMeans, OPTICS, DBSCAN
 from sklearn.base import ClassifierMixin as SKLearnClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC as SupportVectorClassifier
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.exceptions import UndefinedMetricWarning
+import warnings
 
 
 def parse_args() -> tuple[bool, str, float]:
@@ -175,22 +177,18 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
         for dataset_name in datasets.keys()
         for classifier in classifiers
     ]
-    results = []
-    n_test = 0
+    results: list[Result] = batch_test(runs, datasets, writer)
 
-    for dataset_name, classifier in runs:
-        writer.write_line_verbose(f"Running test number {n_test}")
-        n_test += 1
-
-        dataset = datasets[dataset_name]
-        score = round(float(test(dataset, classifier, writer)), 4)
-        item = (score, dataset_name, classifier)
-        results.append(item)
-
-    results = sorted(results, key=lambda x: x[0])
+    results = sorted(results, key=lambda x: x.accuracy)
 
     ensembles = [
-        VotingClassifier([(str(i), result[2]) for i, result in enumerate(results[-k:])])
+        VotingClassifier(
+            [
+                (str(i), result.classifier)
+                for i, result in enumerate(results[-k:])
+                if result.dataset_name == "all"
+            ]
+        )
         for k in range(3, 9, 2)
     ]
 
@@ -199,24 +197,24 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
         for dataset_name in datasets.keys()
         for classifier in ensembles
     ]
-    for dataset_name, classifier in runs:
-        writer.write_line_verbose(f"Running test number {n_test}")
-        n_test += 1
+    results += batch_test(runs, datasets, writer)
 
-        dataset = datasets[dataset_name]
-        score = round(float(test(dataset, classifier, writer)), 4)
-        item = (score, dataset_name, classifier)
-        results.append(item)
+    results = sorted(results, key=lambda x: x.accuracy)
 
-    results = sorted(results, key=lambda x: x[0])
-
-    writer.write_line("| Score | Dataset | Classifier |")
-    writer.write_line("| ----- | ------- | ---------- |")
+    writer.write_line("| Accuracy | Precision | Recall | F1 | Dataset | Classifier |")
+    writer.write_line("| -------- | --------- | ------ | -- | ------- | ---------- |")
     for result in results:
-        score = result[0]
-        dataset = str.ljust(result[1], 6)
-        classifier = result[2]
-        line = f"| {score} | {dataset} | {classifier} |"
+        accuracy = round(float(result.accuracy), 4)
+        precision = round(float(result.precision), 4)
+        recall = round(float(result.recall), 4)
+        f1 = round(float(result.f1), 4)
+
+        dataset = str.ljust(result.dataset_name, 6)
+        classifier = result.classifier
+
+        line = (
+            f"| {accuracy} | {precision} | {recall} | {f1} | {dataset} | {classifier} |"
+        )
         writer.write_line(line)
 
 
@@ -228,6 +226,9 @@ def main() -> None:
 
     if data_reduction < 1:
         data_reduction = 1
+
+    if not verbose:
+        warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, data_reduction, writer)
