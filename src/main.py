@@ -184,14 +184,14 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
         n_test += 1
 
         dataset = datasets[dataset_name]
-        result = test(dataset, classifier, writer)
-        item = (result, dataset_name, classifier)
+        score = round(float(test(dataset, classifier, writer)), 4)
+        item = (score, dataset_name, classifier)
         results.append(item)
 
-    sorted(results, key=lambda x: x[0])
+    results = sorted(results, key=lambda x: x[0])
 
     for result in results:
-        score = float(result[0])
+        score = result[0]
         dataset = str.ljust(result[1], 6)
         classifier = result[2]
         line = f"Score: {score} | Dataset: {dataset} | Classifier: {classifier}"
