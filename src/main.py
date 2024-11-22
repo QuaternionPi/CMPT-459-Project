@@ -190,11 +190,13 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
 
     results = sorted(results, key=lambda x: x[0])
 
+    writer.write_line("| Score | Dataset | Classifier |")
+    writer.write_line("| ----- | ------- | ---------- |")
     for result in results:
         score = result[0]
         dataset = str.ljust(result[1], 6)
         classifier = result[2]
-        line = f"Score: {score} | Dataset: {dataset} | Classifier: {classifier}"
+        line = f"| {score} | {dataset} | {classifier} |"
         writer.write_line(line)
 
 
