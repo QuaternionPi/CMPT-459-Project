@@ -55,6 +55,17 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 ![OPTICS Clustering](./optics/scatter-0-1.png)
 ![DBSCAN Clustering](./dbscan/scatter-0-1.png)
 
+## 5. Outlier Detection
+1. Choose outlier detection methods
+   - Local Outlier Factor
+   - Kernel Density
+2. Plot outliers
+   - They either selected $\lt 1%$ outliers or almost all outliers
+   - This makes sense; our data is professionally collected
+
+### 5.1 Plots
+![Local Outlier Factor Outliers](./lof/scatter-0-1.png)
+![Kernel Density Outliers](./kd/scatter-0-1.png)
 
 ## 6. Feature Selection
 1. We selected 3 feature selection methods
