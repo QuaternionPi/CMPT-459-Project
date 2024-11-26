@@ -3,6 +3,7 @@ import argparse
 from writer import Writer
 from preprocessing import preprocess
 from exploratory_analysis import Analyzer
+from outlier_detection import OutlierDetection
 from clustering import ClusterAnalyzer
 from feature_selection import (
     recursive_feature_elimination,
@@ -100,6 +101,23 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
         analyzer.scatter_plot(
             x_col, y_col, ("RainTomorrow", ["Dry", "Rain"]), path=path
         )
+
+
+def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
+    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+
+    data = data.select_dtypes(include=numeric_types)
+
+    lof = 20
+    bandwidth = 0.8
+    outliers = OutlierDetection(lof, bandwidth, data, writer)
+
+    outliers.find_outliers()
+    lof_analyzer, kd_analyzer = outliers.visualize()
+
+    lof_analyzer.scatter_plot("0", "1", ("Outlier", ["Out", "In"]), path="./lof")
+    kd_analyzer.scatter_plot("0", "1", ("Outlier", ["Out", "In"]), path="./kd")
+    print("line")
 
 
 def clustering(data: pd.DataFrame, writer: Writer) -> None:
@@ -226,6 +244,7 @@ def main() -> None:
     data = preprocess(path, data_reduction, writer)
     # eda(data, writer)
     # clustering(data, writer)
+    outlier_detection(data, writer)
     rfe, lasso, mutual = feature_selection(data, writer)
 
     numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]

@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.decomposition import PCA
 from writer import Writer
 from exploratory_analysis import Analyzer
 from sklearn.neighbors import KernelDensity
@@ -28,8 +29,14 @@ class OutlierDetection:
 
         :return: Data frame with outliers column.
         """
-        self.lof_data: pd.DataFrame = self.data.copy(deep=True)
-        self.kd_data: pd.DataFrame = self.data.copy(deep=True)
+
+        pca = PCA(n_components=2)
+        reduced_data = pd.DataFrame(pca.fit_transform(self.data)).rename(
+            columns={0: "0", 1: "1"}
+        )
+
+        self.lof_data: pd.DataFrame = reduced_data.copy(deep=True)
+        self.kd_data: pd.DataFrame = reduced_data
 
         self.lof_data["Outlier"] = LocalOutlierFactor(n_neighbors=self.lof).fit_predict(
             self.data
@@ -37,8 +44,8 @@ class OutlierDetection:
         self.kd_data["Outlier"] = pd.Series(
             KernelDensity(kernel="gaussian", bandwidth=self.bandwidth)
             .fit(self.data)
-            .score_samples()
-        ).apply(lambda x: -1 if x < 0 else 1)
+            .score_samples(self.data)
+        ).apply(lambda x: -1 if x > -20.0246 else 1)
 
         return (self.lof_data, self.kd_data)
 
@@ -56,6 +63,7 @@ class OutlierDetection:
 
         :return: Pair of 2d and analyzers trained on PCA data showing outliers.
         """
+
         lof_analyzer = Analyzer(self.lof_data, self.writer)
         kd_analyzer = Analyzer(self.kd_data, self.writer)
         return lof_analyzer, kd_analyzer
