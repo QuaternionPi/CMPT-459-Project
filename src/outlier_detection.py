@@ -56,4 +56,6 @@ class OutlierDetection:
 
         :return: Pair of 2d and analyzers trained on PCA data showing outliers.
         """
-        pass
+        lof_analyzer = Analyzer(self.lof_data, self.writer)
+        kd_analyzer = Analyzer(self.kd_data, self.writer)
+        return lof_analyzer, kd_analyzer
