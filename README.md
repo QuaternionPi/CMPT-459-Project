@@ -105,32 +105,32 @@ We've also selected several plots.
     <img src='./eda/scatter-MaxTemp-Temp3pm.png' alt='Scatter plot of Max Temp vs Temp at 3 pm' />
     <figcaption>Scatter plot of Max Temp vs Temp at 3 pm</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./eda/scatter-MaxTemp-Rainfall.png' alt='Scatter plot of Max Temp vs Rainfall' />
     <figcaption>Scatter plot of Max Temp vs Rainfall</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./eda/scatter-MaxTemp-Pressure9am.png' alt='Scatter plot of Max Temp vs Pressure at 9 am' />
     <figcaption>Scatter plot of Max Temp vs Pressure at 9 am</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./eda/scatter-Pressure9am-Pressure3pm.png' alt='Scatter plot of Pressure at 9 am vs Pressure at 3 pm' />
     <figcaption>Scatter plot of Pressure at 9 am vs Pressure at 3 pm</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./eda/scatter-Pressure9am-Location_enc.png' alt='Scatter plot of Location Encoding vs Pressure at 9 am' />
     <figcaption>Scatter plot of Location Encoding vs Pressure at 9 am</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./eda/scatter-WindGustSpeed-Pressure9am.png' alt='Scatter plot of Wind Gust Speed vs Pressure at 9 am' />
     <figcaption>Scatter plot of Wind Gust Speed vs Pressure at 9 am</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./eda/scatter-WindGustSpeed-Location_enc.png' alt='Scatter plot of Location Encoding vs Wind Gust Speed' />
     <figcaption>Scatter plot of Location Encoding vs Wind Gust Speed</figcaption>
@@ -162,12 +162,12 @@ OPTICS despite our tuning assigned almost every point as an outlier.
     <img src='./kmeans/scatter-0-1.png' alt='KMeans Clustering' />
     <figcaption>KMeans Clustering</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./optics/scatter-0-1.png' alt='OPTICS Clustering' />
     <figcaption>OPTICS Clustering</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./dbscan/scatter-0-1.png' alt='DBSCAN Clustering' />
     <figcaption>DBSCAN Clustering</figcaption>
@@ -192,7 +192,7 @@ This is a good indication of the quality of our data.
     <img src='./lof/scatter-0-1.png' alt='Local Outlier Factor Outliers' />
     <figcaption>Local Outlier Factor Outliers</figcaption>
 </figure>
-
+<br>
 <figure>
     <img src='./kd/scatter-0-1.png' alt='Kernel Density Outliers' />
     <figcaption>Kernel Density Outliers</figcaption>
