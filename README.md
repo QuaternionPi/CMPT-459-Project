@@ -18,7 +18,7 @@ The program has the following flags:\
 `--clustering` to toggle clustering.\
 `--outlier-detection` to toggle outlier detection.\
 `--feature-selection` to toggle feature selection.\
-`--classification=[True|False]` to toggle classification.\
+`--classification=[True|False]` to toggle classification.
 
 # Report
 ## 1 Dataset - Rain in Australia
@@ -101,13 +101,40 @@ We've also selected several plots.
 | Humidity at 3 pm  | 421.468  |
 
 ### 3.3 Interesting Plots
-![Scatter plot of Max Temp vs Temp T 3 pm](./eda/scatter-MaxTemp-Temp3pm.png)
-![Scatter plot of Max Temp vs Rainfall](./eda/scatter-MaxTemp-Rainfall.png)
-![Scatter plot of Max Temp vs Pressure at 9 am](./eda/scatter-MaxTemp-Pressure9am.png)
-![Scatter plot of Pressure at 9 am vs Pressure at 3 pm](./eda/scatter-Pressure9am-Pressure3pm.png)
-![Scatter plot of Location Encoding vs Pressure at 9 am](./eda/scatter-Pressure9am-Location_enc.png)
-![Scatter plot of Wind Gust Speed vs Pressure at 9 am](./eda/scatter-WindGustSpeed-Pressure9am.png)
-![Scatter plot of Location Encoding vs Wind Gust Speed](./eda/scatter-WindGustSpeed-Location_enc.png)
+<figure>
+    <img src='./eda/scatter-MaxTemp-Temp3pm.png' alt='Scatter plot of Max Temp vs Temp at 3 pm' />
+    <figcaption>Scatter plot of Max Temp vs Temp at 3 pm</figcaption>
+</figure>
+
+<figure>
+    <img src='./eda/scatter-MaxTemp-Rainfall.png' alt='Scatter plot of Max Temp vs Rainfall' />
+    <figcaption>Scatter plot of Max Temp vs Rainfall</figcaption>
+</figure>
+
+<figure>
+    <img src='./eda/scatter-MaxTemp-Pressure9am.png' alt='Scatter plot of Max Temp vs Pressure at 9 am' />
+    <figcaption>Scatter plot of Max Temp vs Pressure at 9 am</figcaption>
+</figure>
+
+<figure>
+    <img src='./eda/scatter-Pressure9am-Pressure3pm.png' alt='Scatter plot of Pressure at 9 am vs Pressure at 3 pm' />
+    <figcaption>Scatter plot of Pressure at 9 am vs Pressure at 3 pm</figcaption>
+</figure>
+
+<figure>
+    <img src='./eda/scatter-Pressure9am-Location_enc.png' alt='Scatter plot of Location Encoding vs Pressure at 9 am' />
+    <figcaption>Scatter plot of Location Encoding vs Pressure at 9 am</figcaption>
+</figure>
+
+<figure>
+    <img src='./eda/scatter-WindGustSpeed-Pressure9am.png' alt='Scatter plot of Wind Gust Speed vs Pressure at 9 am' />
+    <figcaption>Scatter plot of Wind Gust Speed vs Pressure at 9 am</figcaption>
+</figure>
+
+<figure>
+    <img src='./eda/scatter-WindGustSpeed-Location_enc.png' alt='Scatter plot of Location Encoding vs Wind Gust Speed' />
+    <figcaption>Scatter plot of Location Encoding vs Wind Gust Speed</figcaption>
+</figure>
 
 ## 4 Clustering
 [View Code](./src/clustering.py)
@@ -131,9 +158,20 @@ OPTICS despite our tuning assigned almost every point as an outlier.
 | Silhouette Scores | 0.172  | -0.392 | 0.581  |
 
 ### 4.2 Plots
-![KMeans Clustering](./kmeans/scatter-0-1.png)
-![OPTICS Clustering](./optics/scatter-0-1.png)
-![DBSCAN Clustering](./dbscan/scatter-0-1.png)
+<figure>
+    <img src='./kmeans/scatter-0-1.png' alt='KMeans Clustering' />
+    <figcaption>KMeans Clustering</figcaption>
+</figure>
+
+<figure>
+    <img src='./optics/scatter-0-1.png' alt='OPTICS Clustering' />
+    <figcaption>OPTICS Clustering</figcaption>
+</figure>
+
+<figure>
+    <img src='./dbscan/scatter-0-1.png' alt='DBSCAN Clustering' />
+    <figcaption>DBSCAN Clustering</figcaption>
+</figure>
 
 ## 5 Outlier Detection
 [View Code](./src/outlier_detection.py)
@@ -150,8 +188,15 @@ Furthermore upon inspecting what values were classified as outliers by Local Out
 This is a good indication of the quality of our data.
 
 ### 5.1 Plots
-![Local Outlier Factor Outliers](./lof/scatter-0-1.png)
-![Kernel Density Outliers](./kd/scatter-0-1.png)
+<figure>
+    <img src='./lof/scatter-0-1.png' alt='Local Outlier Factor Outliers' />
+    <figcaption>Local Outlier Factor Outliers</figcaption>
+</figure>
+
+<figure>
+    <img src='./kd/scatter-0-1.png' alt='Kernel Density Outliers' />
+    <figcaption>Kernel Density Outliers</figcaption>
+</figure>
 
 ## 6 Feature Selection
 [View Code](./src/feature_selection.py)
