@@ -20,7 +20,7 @@ from sklearn.exceptions import UndefinedMetricWarning
 import warnings
 
 
-def parse_args() -> tuple[bool, str, float]:
+def parse_args() -> argparse.Namespace:
     """
     Parses command line arguments.
 
@@ -39,9 +39,42 @@ def parse_args() -> tuple[bool, str, float]:
         help="amount of data to exclude i.e. =10 keeps only 1 in 10 data points",
         default=10,
     )
+    parser.add_argument(
+        "--exploratory-data-analysis",
+        "-eda",
+        type=bool,
+        help="run exploratory data analysis?",
+        default=True,
+    )
+    parser.add_argument(
+        "--clustering",
+        type=bool,
+        help="run clustering?",
+        default=True,
+    )
+    parser.add_argument(
+        "--outlier-detection",
+        "-od",
+        type=bool,
+        help="run outlier detection?",
+        default=True,
+    )
+    parser.add_argument(
+        "--feature-selection",
+        "-fs",
+        type=bool,
+        help="run feature selection?",
+        default=True,
+    )
+    parser.add_argument(
+        "--classification",
+        type=bool,
+        help="run classification?",
+        default=True,
+    )
 
     args = parser.parse_args()
-    return (args.verbose, args.data, args.data_reduction)
+    return args
 
 
 def normalize_column(col: pd.Series) -> pd.Series:
@@ -232,7 +265,15 @@ def main() -> None:
     """
     Main function of the program
     """
-    (verbose, path, data_reduction) = parse_args()
+    args = parse_args()
+    verbose = args.verbose
+    path = args.data
+    data_reduction = args.data_reduction
+    run_exploratory_data_analysis = args.exploratory_data_analysis
+    run_clustering = args.clustering
+    run_outlier_detection = args.outlier_detection
+    run_feature_selection = args.feature_selection
+    run_classification = args.classification
 
     if data_reduction < 1:
         data_reduction = 1
@@ -242,22 +283,28 @@ def main() -> None:
 
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, data_reduction, writer)
-    # eda(data, writer)
-    # clustering(data, writer)
-    outlier_detection(data, writer)
-    rfe, lasso, mutual = feature_selection(data, writer)
 
     numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
     numerics = data.select_dtypes(include=numeric_types)
 
-    datasets = {
-        "all": numerics,
-        "rfe": numerics[rfe.columns],
-        "lasso": numerics[lasso.columns],
-        "mutual": numerics[mutual.columns],
-    }
-    classification(datasets, writer)
+    datasets = {"all": numerics}
+
+    if run_exploratory_data_analysis:
+        eda(data, writer)
+    if run_clustering:
+        clustering(data, writer)
+    if run_outlier_detection:
+        outlier_detection(data, writer)
+    if run_feature_selection:
+        rfe, lasso, mutual = feature_selection(data, writer)
+        datasets["rfe"] = numerics[rfe.columns]
+        datasets["lasso"] = numerics[lasso.columns]
+        datasets["mutual"] = numerics[mutual.columns]
+
+    if run_classification:
+        classification(datasets, writer)
+
+    writer.write_line("---- Done! ----")
 
 
 if __name__ == "__main__":
