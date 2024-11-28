@@ -12,14 +12,14 @@ Cleaning needs to be done on the data. This is expected to be a straight forward
 For data preprocessing ideas, we may extract the Month as another column to see if the month-to-month weather conditions vary. We may group the MinTemp and MaxTemp columns into various temperature regions. For the Location column, we may perform one-hot encoding to convert each weather station location into a unique numerical value the applied data mining techniques can better understand.
 
 ## 2. Data Preprocessing
-1. We remove columns with $\gt 30\%$ missing data
+1. We've removed columns with $\gt 30\%$ missing data (3 columns total)
 2. Remaining missing numerical data is imputed to the mean
 3. Remaining missing categorical data is imputed to the mode
-4. We have deferred normalization of numerical features until it is needed
+4. We deferred normalization of numerical features until it is needed
    - EDA works better if we have non-normalized features
 5. Our dataset is large enough we don't need to create synthetic data
 6. We have parameterized data reduction and run our tests with `--data-reduction=20`
-7. The minority class (it rains) is about a quarter of the data set, it doesn't need augmentation
+7. The minority class (it rains) is about 25% of the data set, it doesn't need augmentation
 8. Our data has insufficient dimensionality to require PCA
 
 ## 3. Exploratory Data Analysis
@@ -41,7 +41,7 @@ For data preprocessing ideas, we may extract the Month as another column to see 
    - We chose KMeans, OPTICS, and DBSCAN
 2. We performed these clusterings
    - finding a good `eps` value for DBSCAN was hard. We chose 3
-3. We found runtimes, Silhouette scores
+3. We found runtimes and silhouette scores
 4. Created visualizations
 
 ### 4.1 Clustering Performance
@@ -56,12 +56,12 @@ For data preprocessing ideas, we may extract the Month as another column to see 
 ![DBSCAN Clustering](./dbscan/scatter-0-1.png)
 
 ## 5. Outlier Detection
-1. Choose outlier detection methods
+1. Chosen outlier detection methods:
    - Local Outlier Factor
    - Kernel Density
-2. Plot outliers
+2. Plotted outliers
    - They either selected $\lt 1%$ outliers or almost all outliers
-   - This makes sense; our data is professionally collected
+   - This makes sense as our data is professionally collected
 
 ### 5.1 Plots
 ![Local Outlier Factor Outliers](./lof/scatter-0-1.png)
