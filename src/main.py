@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
     """
     Parses command line arguments.
 
-    :return: tuple of verbose and data
+    :return: Command arguments.
     """
     parser = argparse.ArgumentParser(description="number of clusters to find")
     parser.add_argument(
@@ -78,17 +78,29 @@ def parse_args() -> argparse.Namespace:
 
 
 def normalize_column(col: pd.Series) -> pd.Series:
+    """
+    Normalize a Pandas Data Series.
+
+    :param col: Pandas Data Series to be normalized.
+    :return: Input Data Series, normalized.
+    """
     return (col - col.mean()) / col.std()
 
 
 def normalize(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalize a Pandas DataFrame.
+
+    :param df: Pandas DataFrame to be normalized.
+    :return: Input DataFrame, normalized on every column.
+    """
     # Modified from https://stackoverflow.com/questions/26414913/normalize-columns-of-a-dataframe
     return df.iloc[:].apply(normalize_column, axis=0)
 
 
 def eda(data: pd.DataFrame, writer: Writer) -> None:
     """
-    Perform exploratory data analysis
+    Perform exploratory data analysis on the DataFrame.
 
     :param data: Data to analyze.
     :param writer: where to write outputs.
@@ -134,6 +146,12 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
 
 
 def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
+    """
+    Perform outlier detection on the data.
+
+    :param data: The data to have outliers detected.
+    :param writer: where to write outputs.
+    """
     lof = 20
     bandwidth = 0.8
     outliers = OutlierDetection(lof, bandwidth, data, writer)
@@ -143,10 +161,15 @@ def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
 
     lof_analyzer.scatter_plot("0", "1", ("Outlier", ["Out", "In"]), path="./lof")
     kd_analyzer.scatter_plot("0", "1", ("Outlier", ["Out", "In"]), path="./kd")
-    print("line")
 
 
 def clustering(data: pd.DataFrame, writer: Writer) -> None:
+    """
+    Perform clustering on the data.
+
+    :param data: The data to cluster.
+    :param writer: where to write outputs.
+    """
     numerics = normalize(data)
 
     kmeans = KMeans(n_clusters=2)
@@ -179,7 +202,9 @@ def feature_selection(
     """
     Selects features based on several methods
 
-    :return: (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
+    :param data: The data to select features from.
+    :param writer: Where to write outputs.
+    :return: Tuple of (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
     """
     data = data.copy(deep=True)
     rain_tomorrow = data["RainTomorrow"]
@@ -195,6 +220,12 @@ def feature_selection(
 
 
 def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
+    """
+    Perform classification on the data sets.
+
+    :param datasets: Pairs of DataFrames and their names.
+    :param  writer: Where to write outputs.
+    """
     k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30, 2)]
     support_vectors = [
         SupportVectorClassifier(C=C, kernel=kernel)
@@ -250,7 +281,7 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
 
 def main() -> None:
     """
-    Main function of the program
+    Main function of the program.
     """
     args = parse_args()
     verbose = args.verbose

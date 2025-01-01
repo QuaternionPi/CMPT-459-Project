@@ -1,6 +1,4 @@
 class Writer:
-    """ """
-
     def __init__(self, verbose: bool, output_file: str | None):
         """
         A utility class to write text.

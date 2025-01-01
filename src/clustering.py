@@ -10,7 +10,7 @@ import time
 class ClusterAnalyzer:
     def __init__(
         self, clusterings: list[SKLearnClustering], data: pd.DataFrame, writer: Writer
-    ):
+    ) -> None:
         """
         Runs various clustering algorithms and computes their properties
 
