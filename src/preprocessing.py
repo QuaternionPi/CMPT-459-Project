@@ -52,6 +52,18 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     # Change rain tomorrow from strings to numerics
     df["RainTomorrow"] = df["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
 
+    # Encode wind direction as cardinal directions
+    wind_columns = ["WindDir9am", "WindDir3pm", "WindGustDir"]
+    for col in wind_columns:
+        north_south_col = col + "NorthSouth"
+        east_west_col = col + "EastWest"
+        df[north_south_col] = df[col].apply(
+            lambda x: 1 if "N" in str(x) else -1 if "S" in str(x) else 0
+        )
+        df[east_west_col] = df[col].apply(
+            lambda x: 1 if "E" in str(x) else -1 if "W" in str(x) else 0
+        )
+
     # Year and month https://stackoverflow.com/questions/25146121/extracting-just-month-and-year-separately-from-pandas-datetime-column
     df["Year"] = pd.DatetimeIndex(df["Date"]).year
     df["Month"] = pd.DatetimeIndex(df["Date"]).month
