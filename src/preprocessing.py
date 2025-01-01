@@ -52,6 +52,9 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     # Change rain tomorrow from strings to numerics
     df["RainTomorrow"] = df["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
 
+    # Change rain today
+    df["RainToday"] = df["RainToday"].apply(lambda x: 0 if str(x) == "No" else 1)
+
     # Encode wind direction as cardinal directions
     wind_columns = ["WindDir9am", "WindDir3pm", "WindGustDir"]
     for col in wind_columns:
