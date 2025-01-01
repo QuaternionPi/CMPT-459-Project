@@ -18,7 +18,7 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     frac = 1 - 1 / data_reduction
     df = df.drop(df.sample(frac=frac, random_state=1).index)
 
-    int_dtypes = [
+    numeric_types = [
         np.int8,
         np.int16,
         np.int32,
@@ -34,7 +34,7 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
 
     # impute remaining NA values with mean. reference https://saturncloud.io/blog/how-to-replace-nan-values-with-the-average-of-columns-in-pandas-dataframe/
     for col in df.columns:
-        if df[col].dtype in int_dtypes:  # numerical, impute with mean
+        if df[col].dtype in numeric_types:  # numerical, impute with mean
             mean = df[col].mean()
             df[col] = df[col].fillna(mean)
 
@@ -57,5 +57,5 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     df["Month"] = pd.DatetimeIndex(df["Date"]).month
 
     # Remove redundant columns
-    df = df.drop(columns=["Location", "Date"])
+    df = df.select_dtypes(numeric_types)
     return df

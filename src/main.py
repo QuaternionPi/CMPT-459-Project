@@ -93,9 +93,6 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
     :param data: Data to analyze.
     :param writer: where to write outputs.
     """
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
-    data = data.select_dtypes(include=numeric_types)
     numeric_columns: list[str] = list(data.columns)
     numeric_columns.remove("RainTomorrow")
     columns_count = len(numeric_columns)
@@ -137,10 +134,6 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
 
 
 def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
-    data = data.select_dtypes(include=numeric_types)
-
     lof = 20
     bandwidth = 0.8
     outliers = OutlierDetection(lof, bandwidth, data, writer)
@@ -154,10 +147,7 @@ def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
 
 
 def clustering(data: pd.DataFrame, writer: Writer) -> None:
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
-    numerics = data.select_dtypes(include=numeric_types)
-    numerics = normalize(numerics)
+    numerics = normalize(data)
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
@@ -191,10 +181,7 @@ def feature_selection(
 
     :return: (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
     """
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
     data = data.copy(deep=True)
-    data = data.select_dtypes(include=numeric_types)
     rain_tomorrow = data["RainTomorrow"]
     data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
@@ -284,10 +271,7 @@ def main() -> None:
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, data_reduction, writer)
 
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-    numerics = data.select_dtypes(include=numeric_types)
-
-    datasets = {"all": numerics}
+    datasets = {"all": data}
 
     if run_exploratory_data_analysis:
         eda(data, writer)
@@ -297,9 +281,9 @@ def main() -> None:
         outlier_detection(data, writer)
     if run_feature_selection:
         rfe, lasso, mutual = feature_selection(data, writer)
-        datasets["rfe"] = numerics[rfe.columns]
-        datasets["lasso"] = numerics[lasso.columns]
-        datasets["mutual"] = numerics[mutual.columns]
+        datasets["rfe"] = data[rfe.columns]
+        datasets["lasso"] = data[lasso.columns]
+        datasets["mutual"] = data[mutual.columns]
 
     if run_classification:
         classification(datasets, writer)
