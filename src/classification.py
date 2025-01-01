@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.base import ClassifierMixin as SKLearnClassifier
 from sklearn.model_selection import KFold, cross_validate
 from writer import Writer
@@ -9,7 +10,14 @@ Result = namedtuple("Result", "accuracy precision recall f1 dataset_name classif
 
 def test(
     X: pd.DataFrame, y: pd.DataFrame, classifier: SKLearnClassifier, writer: Writer
-) -> float:
+) -> dict[str, np.ndarray]:
+    """
+    :param X: DataFrame of input features.
+    :param y: DataFrame of target feature.
+    :param classifier: Classifier to test.
+    :param writer: Where to write the outputs.
+    :return: Dict of scores.
+    """
     cv = KFold(n_splits=5, random_state=1, shuffle=True)
 
     scores = cross_validate(
@@ -28,6 +36,14 @@ def batch_test(
     datasets: dict[str, pd.DataFrame],
     writer: Writer,
 ) -> list[Result]:
+    """
+    Perform batch testing of classifiers over many datasets.
+
+    :param runs: List of dataset names and classifiers.
+    :param datasets: Datasets and their names.
+    :param writer: Where to write the outputs.
+    :return: List of results.
+    """
     results: list[Result] = []
     n_test = 0
 

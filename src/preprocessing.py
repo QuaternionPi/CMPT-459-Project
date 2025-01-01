@@ -18,7 +18,7 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     frac = 1 - 1 / data_reduction
     df = df.drop(df.sample(frac=frac, random_state=1).index)
 
-    int_dtypes = [
+    numeric_types = [
         np.int8,
         np.int16,
         np.int32,
@@ -34,7 +34,7 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
 
     # impute remaining NA values with mean. reference https://saturncloud.io/blog/how-to-replace-nan-values-with-the-average-of-columns-in-pandas-dataframe/
     for col in df.columns:
-        if df[col].dtype in int_dtypes:  # numerical, impute with mean
+        if df[col].dtype in numeric_types:  # numerical, impute with mean
             mean = df[col].mean()
             df[col] = df[col].fillna(mean)
 
@@ -52,10 +52,25 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     # Change rain tomorrow from strings to numerics
     df["RainTomorrow"] = df["RainTomorrow"].apply(lambda x: 0 if str(x) == "No" else 1)
 
+    # Change rain today
+    df["RainToday"] = df["RainToday"].apply(lambda x: 0 if str(x) == "No" else 1)
+
+    # Encode wind direction as cardinal directions
+    wind_columns = ["WindDir9am", "WindDir3pm", "WindGustDir"]
+    for col in wind_columns:
+        north_south_col = col + "NorthSouth"
+        east_west_col = col + "EastWest"
+        df[north_south_col] = df[col].apply(
+            lambda x: 1 if "N" in str(x) else -1 if "S" in str(x) else 0
+        )
+        df[east_west_col] = df[col].apply(
+            lambda x: 1 if "E" in str(x) else -1 if "W" in str(x) else 0
+        )
+
     # Year and month https://stackoverflow.com/questions/25146121/extracting-just-month-and-year-separately-from-pandas-datetime-column
     df["Year"] = pd.DatetimeIndex(df["Date"]).year
     df["Month"] = pd.DatetimeIndex(df["Date"]).month
 
     # Remove redundant columns
-    df = df.drop(columns=["Location", "Date"])
+    df = df.select_dtypes(numeric_types)
     return df

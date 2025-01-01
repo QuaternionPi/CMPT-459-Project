@@ -19,7 +19,7 @@ The program has the following flags:\
 `--clustering` to toggle clustering.\
 `--outlier-detection` to toggle outlier detection.\
 `--feature-selection` to toggle feature selection.\
-`--classification=[True|False]` to toggle classification.
+`--classification` to toggle classification.
 
 ## Help
 For help run:
@@ -93,14 +93,14 @@ Many data were collected and are shown below.
 We highlight the top and bottom three variances. 
 We've also selected several plots.
 
-### 3.1 Top Three Variances
+### 3.1 Top Three Lowest Variances
 | Feature  | Variance |
 | -------- | -------- |
-| Year     |   6.439  |
-| Month    |  11.879  |
-| Min Temp |  41.079  |
+| Wind Direction 9 am East West   | 0.779 |
+| Wind Gust Direction North South | 0.796 |
+| Wind Direction 9 am North South | 0.866 |
 
-### 3.2 Bottom Three Variances
+### 3.2 Bottom Three Highest Variances
 | Feature           | Variance |
 | ----------------- | -------- |
 | Location Encoding | 202.733  |
@@ -320,7 +320,7 @@ My best guess is that wind speed is really important in a non-obvious way and Mu
 ### 9.3 Best Scores
 | Accuracy | Precision | Recall | F1     |
 | -------- | --------- | ------ | ------ |
-| 0.8416   | 1.0       | 0.4942 | 0.5593 |
+| 0.8406   | 0.7657    | 0.4098 | 0.5329 |
 
 ### Challenges
 The biggest challenge with this project has been balancing performance with results.
@@ -355,250 +355,250 @@ Matplotlib Python Library - https://matplotlib.org/
 ## Appendix A - Classification Results
 | Accuracy | Precision | Recall | F1 | Dataset | Classifier |
 | -------- | --------- | ------ | -- | ------- | ---------- |
-| 0.5882 | 0.0726 | 0.0724 | 0.0724 | mutual | SVC(C=5, kernel='sigmoid') |
-| 0.5883 | 0.0727 | 0.0724 | 0.0725 | mutual | SVC(C=6, kernel='sigmoid') |
-| 0.5883 | 0.0727 | 0.0724 | 0.0725 | mutual | SVC(C=7, kernel='sigmoid') |
-| 0.5883 | 0.0737 | 0.0736 | 0.0736 | mutual | SVC(C=9, kernel='sigmoid') |
-| 0.5883 | 0.0732 | 0.073  | 0.073  | mutual | SVC(C=8, kernel='sigmoid') |
-| 0.5885 | 0.0727 | 0.0724 | 0.0725 | mutual | SVC(C=4, kernel='sigmoid') |
-| 0.5886 | 0.0723 | 0.0718 | 0.072  | mutual | SVC(C=3, kernel='sigmoid') |
-| 0.589  | 0.0718 | 0.0712 | 0.0714 | mutual | SVC(C=2, kernel='sigmoid') |
-| 0.5901 | 0.0716 | 0.0705 | 0.071  | mutual | SVC(C=1, kernel='sigmoid') |
-| 0.7437 | 0.4281 | 0.4453 | 0.4357 | mutual | RandomForestClassifier(n_estimators=1) |
-| 0.7594 | 0.4623 | 0.4723 | 0.4654 | all    | RandomForestClassifier(n_estimators=1) |
-| 0.7628 | 0.4659 | 0.4634 | 0.4644 | rfe    | RandomForestClassifier(n_estimators=1) |
-| 0.763  | 0.466  | 0.4584 | 0.4616 | mutual | KNeighborsClassifier(n_neighbors=1) |
-| 0.7678 | 0.479  | 0.4942 | 0.4854 | lasso  | RandomForestClassifier(n_estimators=1) |
+| 0.7575 | 0.4555 | 0.4591 | 0.4564 | mutual | RandomForestClassifier(n_estimators=1) |        
+| 0.7579 | 0.4587 | 0.4775 | 0.4669 | rfe    | RandomForestClassifier(n_estimators=1) |        
+| 0.7587 | 0.4574 | 0.4591 | 0.4577 | all    | RandomForestClassifier(n_estimators=1) |        
+| 0.7624 | 0.4649 | 0.4559 | 0.4594 | lasso  | RandomForestClassifier(n_estimators=1) |        
 | 0.7683 | 0.4794 | 0.4715 | 0.4743 | rfe    | KNeighborsClassifier(n_neighbors=1) |
-| 0.7734 | 0.4904 | 0.4782 | 0.4834 | lasso  | KNeighborsClassifier(n_neighbors=1) |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=1, kernel='poly') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=1) |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=1, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=2) |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=2, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=3, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=4, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=5, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=6, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=7, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=8, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | all    | SVC(C=9, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=1, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=2, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=3, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=4, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=5, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=6, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | rfe    | SVC(C=7, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | lasso  | SVC(C=1, kernel='sigmoid') |
-| 0.7775 | 0.0    | 0.0    | 0.0    | lasso  | SVC(C=2, kernel='sigmoid') |
-| 0.7777 | 0.2    | 0.0006 | 0.0013 | all    | SVC(C=3) |
-| 0.7777 | 0.2    | 0.0006 | 0.0013 | lasso  | SVC(C=3, kernel='sigmoid') |
-| 0.7778 | 0.4    | 0.0013 | 0.0026 | rfe    | SVC(C=8, kernel='sigmoid') |
-| 0.7778 | 0.2    | 0.0013 | 0.0025 | lasso  | SVC(C=4, kernel='sigmoid') |
+| 0.7696 | 0.4817 | 0.4754 | 0.4779 | mutual | KNeighborsClassifier(n_neighbors=1) |
+| 0.7751 | 0.4937 | 0.4811 | 0.4867 | lasso  | KNeighborsClassifier(n_neighbors=1) |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=1, kernel='poly') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=1) |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=1, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=2) |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=2, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=3, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=4, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=5, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=6, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=7, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=8, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | all    | SVC(C=9, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=1, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=2, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=3, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=4, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=5, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=6, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | rfe    | SVC(C=7, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | lasso  | SVC(C=1, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | lasso  | SVC(C=2, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | mutual | SVC(C=1, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | mutual | SVC(C=2, kernel='sigmoid') |
+| 0.7775 | 0.0000 | 0.0000 | 0.0000 | mutual | SVC(C=3, kernel='sigmoid') |
+| 0.7777 | 0.2000 | 0.0006 | 0.0013 | all    | SVC(C=3) |
+| 0.7777 | 0.2000 | 0.0006 | 0.0013 | lasso  | SVC(C=3, kernel='sigmoid') |
+| 0.7777 | 0.2000 | 0.0006 | 0.0013 | mutual | SVC(C=4, kernel='sigmoid') |
+| 0.7777 | 0.2000 | 0.0006 | 0.0013 | mutual | SVC(C=5, kernel='sigmoid') |
+| 0.7778 | 0.4000 | 0.0013 | 0.0026 | rfe    | SVC(C=8, kernel='sigmoid') |
 | 0.7779 | 0.5333 | 0.0031 | 0.0062 | rfe    | SVC(C=9, kernel='sigmoid') |
-| 0.7779 | 0.4    | 0.0019 | 0.0038 | all    | SVC(C=4) |
-| 0.7779 | 0.4    | 0.0019 | 0.0038 | lasso  | SVC(C=5, kernel='sigmoid') |
-| 0.7782 | 0.6    | 0.0033 | 0.0065 | rfe    | SVC(C=1) |
-| 0.779  | 0.8    | 0.0072 | 0.0142 | all    | SVC(C=2, kernel='poly') |
-| 0.779  | 0.8    | 0.0072 | 0.0142 | all    | SVC(C=5) |
-| 0.779  | 1.0    | 0.0069 | 0.0137 | lasso  | SVC(C=6, kernel='sigmoid') |
-| 0.78   | 1.0    | 0.0116 | 0.0229 | lasso  | SVC(C=1) |
-| 0.7808 | 1.0    | 0.0155 | 0.0303 | all    | SVC(C=6) |
-| 0.7808 | 0.8636 | 0.0179 | 0.035  | lasso  | SVC(C=7, kernel='sigmoid') |
-| 0.7839 | 0.9473 | 0.0317 | 0.0605 | all    | SVC(C=7) |
-| 0.784  | 0.8954 | 0.0337 | 0.0646 | lasso  | SVC(C=8, kernel='sigmoid') |
-| 0.784  | 0.5153 | 0.496  | 0.5047 | all    | KNeighborsClassifier(n_neighbors=1) |
-| 0.7854 | 0.9424 | 0.0399 | 0.0754 | all    | SVC(C=3, kernel='poly') |
-| 0.7866 | 0.8686 | 0.0494 | 0.0929 | lasso  | SVC(C=9, kernel='sigmoid') |
+| 0.7779 | 0.4000 | 0.0019 | 0.0038 | all    | SVC(C=2, kernel='poly') |
+| 0.7779 | 0.4000 | 0.0019 | 0.0038 | all    | SVC(C=4) |
+| 0.7779 | 0.4000 | 0.0019 | 0.0038 | lasso  | SVC(C=4, kernel='sigmoid') |
+| 0.7781 | 0.6000 | 0.0026 | 0.0052 | lasso  | SVC(C=5, kernel='sigmoid') |
+| 0.7782 | 0.6000 | 0.0033 | 0.0065 | rfe    | SVC(C=1) |
+| 0.7782 | 0.8000 | 0.0032 | 0.0064 | mutual | SVC(C=6, kernel='sigmoid') |
+| 0.7785 | 0.6000 | 0.0045 | 0.0090 | mutual | SVC(C=1) |
+| 0.7788 | 0.8000 | 0.0058 | 0.0116 | all    | SVC(C=5) |
+| 0.7789 | 1.0000 | 0.0063 | 0.0125 | mutual | SVC(C=7, kernel='sigmoid') |
+| 0.7792 | 1.0000 | 0.0077 | 0.0152 | lasso  | SVC(C=6, kernel='sigmoid') |
+| 0.7793 | 1.0000 | 0.0084 | 0.0166 | lasso  | SVC(C=1) |
+| 0.7800 | 0.9200 | 0.0126 | 0.0248 | mutual | SVC(C=8, kernel='sigmoid') |
+| 0.7803 | 1.0000 | 0.0129 | 0.0253 | all    | SVC(C=6) |
+| 0.7810 | 0.8484 | 0.0191 | 0.0372 | mutual | SVC(C=9, kernel='sigmoid') |
+| 0.7811 | 1.0000 | 0.0168 | 0.0328 | all    | SVC(C=3, kernel='poly') |
+| 0.7817 | 0.9378 | 0.0204 | 0.0398 | lasso  | SVC(C=7, kernel='sigmoid') |
+| 0.7825 | 0.9750 | 0.0239 | 0.0462 | all    | SVC(C=7) |
+| 0.7834 | 0.9155 | 0.0307 | 0.0590 | mutual | SVC(C=2) |
+| 0.7841 | 0.9067 | 0.0338 | 0.0648 | lasso  | SVC(C=8, kernel='sigmoid') |
+| 0.7850 | 0.5174 | 0.4961 | 0.5057 | all    | KNeighborsClassifier(n_neighbors=1) |
+| 0.7851 | 0.9411 | 0.0386 | 0.0730 | all    | SVC(C=8) |
+| 0.7866 | 0.8963 | 0.0476 | 0.0897 | lasso  | SVC(C=9, kernel='sigmoid') |
 | 0.7867 | 0.9388 | 0.0468 | 0.0879 | rfe    | SVC(C=2) |
-| 0.7878 | 0.9278 | 0.0517 | 0.0968 | all    | SVC(C=8) |
-| 0.7918 | 0.5378 | 0.4491 | 0.4891 | mutual | RandomForestClassifier(n_estimators=3) |
-| 0.7918 | 0.9246 | 0.0725 | 0.1327 | all    | SVC(C=9) |
-| 0.7961 | 0.5476 | 0.4844 | 0.5124 | lasso  | RandomForestClassifier(n_estimators=3) |
-| 0.7973 | 0.9236 | 0.1017 | 0.18   | all    | SVC(C=4, kernel='poly') |
-| 0.7988 | 0.5573 | 0.4712 | 0.5097 | rfe    | RandomForestClassifier(n_estimators=3) |
-| 0.8002 | 0.9074 | 0.1193 | 0.2071 | lasso  | SVC(C=2) |
-| 0.8019 | 0.5652 | 0.4743 | 0.5153 | all    | RandomForestClassifier(n_estimators=3) |
+| 0.7877 | 0.9174 | 0.0518 | 0.0968 | all    | SVC(C=4, kernel='poly') |
+| 0.7894 | 0.9254 | 0.0600 | 0.1112 | all    | SVC(C=9) |
+| 0.7929 | 0.8703 | 0.0851 | 0.1515 | mutual | SVC(C=3) |
+| 0.7944 | 0.9042 | 0.0897 | 0.1602 | lasso  | SVC(C=2) |
+| 0.7944 | 0.5468 | 0.4582 | 0.4971 | lasso  | RandomForestClassifier(n_estimators=3) |        
+| 0.7954 | 0.5476 | 0.4652 | 0.5021 | mutual | RandomForestClassifier(n_estimators=3) |        
+| 0.7983 | 0.9242 | 0.1065 | 0.1879 | all    | SVC(C=5, kernel='poly') |
+| 0.7999 | 0.5600 | 0.4708 | 0.5108 | rfe    | RandomForestClassifier(n_estimators=3) |
+| 0.8012 | 0.9091 | 0.1238 | 0.2142 | lasso  | SVC(C=1, kernel='poly') |
+| 0.8017 | 0.8945 | 0.1298 | 0.2211 | mutual | SVC(C=1, kernel='poly') |
+| 0.8032 | 0.5692 | 0.4732 | 0.5163 | all    | RandomForestClassifier(n_estimators=3) |        
+| 0.8032 | 0.5745 | 0.4478 | 0.5022 | rfe    | RandomForestClassifier(n_estimators=5) |        
 | 0.8034 | 0.8906 | 0.1378 | 0.2355 | rfe    | SVC(C=3) |
 | 0.8035 | 0.5746 | 0.4512 | 0.5043 | rfe    | KNeighborsClassifier(n_neighbors=3) |
-| 0.8038 | 0.5799 | 0.4295 | 0.4926 | mutual | KNeighborsClassifier(n_neighbors=3) |
-| 0.8038 | 0.5717 | 0.4653 | 0.5124 | rfe    | RandomForestClassifier(n_estimators=5) |
-| 0.8042 | 0.5735 | 0.464  | 0.5122 | lasso  | RandomForestClassifier(n_estimators=5) |
-| 0.8059 | 0.8673 | 0.1556 | 0.2601 | all    | SVC(C=5, kernel='poly') |
-| 0.8063 | 0.5821 | 0.4546 | 0.5103 | mutual | RandomForestClassifier(n_estimators=5) |
-| 0.8089 | 0.5934 | 0.4499 | 0.511  | mutual | RandomForestClassifier(n_estimators=7) |
-| 0.8104 | 0.5951 | 0.46   | 0.5181 | lasso  | KNeighborsClassifier(n_neighbors=3) |
-| 0.8112 | 0.5972 | 0.4683 | 0.5237 | lasso  | RandomForestClassifier(n_estimators=7) |
-| 0.8126 | 0.7642 | 0.2388 | 0.3577 | mutual | SVC(C=1, kernel='linear') |
-| 0.813  | 0.7638 | 0.2428 | 0.3616 | mutual | SVC(C=2, kernel='linear') |
-| 0.8138 | 0.8406 | 0.2059 | 0.3282 | all    | SVC(C=6, kernel='poly') |
-| 0.8142 | 0.83   | 0.2121 | 0.335  | rfe    | SVC(C=4) |
-| 0.8147 | 0.6064 | 0.4769 | 0.5329 | rfe    | RandomForestClassifier(n_estimators=7) |
-| 0.8152 | 0.6176 | 0.4451 | 0.5169 | mutual | RandomForestClassifier(n_estimators=9) |
-| 0.8156 | 0.7682 | 0.2568 | 0.3786 | mutual | SVC(C=3, kernel='linear') |
-| 0.8156 | 0.6144 | 0.4643 | 0.5276 | rfe    | RandomForestClassifier(n_estimators=11) |
-| 0.816  | 0.6157 | 0.4651 | 0.5286 | rfe    | RandomForestClassifier(n_estimators=9) |
-| 0.8162 | 0.8394 | 0.2209 | 0.346  | lasso  | SVC(C=1, kernel='poly') |
+| 0.8042 | 0.5772 | 0.4532 | 0.5067 | mutual | KNeighborsClassifier(n_neighbors=3) |
+| 0.8046 | 0.8732 | 0.1474 | 0.2487 | all    | SVC(C=6, kernel='poly') |
+| 0.8054 | 0.5799 | 0.4696 | 0.5175 | lasso  | RandomForestClassifier(n_estimators=5) |        
+| 0.8057 | 0.8729 | 0.1574 | 0.2599 | mutual | SVC(C=4) |
+| 0.8063 | 0.5821 | 0.4670 | 0.5165 | mutual | RandomForestClassifier(n_estimators=5) |
+| 0.8090 | 0.5904 | 0.4635 | 0.5183 | rfe    | RandomForestClassifier(n_estimators=7) |
+| 0.8097 | 0.8373 | 0.1854 | 0.3002 | all    | SVC(C=7, kernel='poly') |
+| 0.8109 | 0.6000 | 0.4520 | 0.5144 | lasso  | KNeighborsClassifier(n_neighbors=3) |
+| 0.8119 | 0.8489 | 0.1935 | 0.3114 | lasso  | SVC(C=3) |
+| 0.8130 | 0.6030 | 0.4651 | 0.5244 | mutual | RandomForestClassifier(n_estimators=7) |
+| 0.8142 | 0.8300 | 0.2121 | 0.3350 | rfe    | SVC(C=4) |
+| 0.8144 | 0.6095 | 0.4710 | 0.5294 | rfe    | RandomForestClassifier(n_estimators=9) |
+| 0.8147 | 0.8517 | 0.2097 | 0.3317 | mutual | SVC(C=5) |
+| 0.8149 | 0.6098 | 0.4698 | 0.5297 | all    | RandomForestClassifier(n_estimators=5) |        
+| 0.8160 | 0.6230 | 0.4452 | 0.5176 | mutual | KNeighborsClassifier() |
 | 0.8162 | 0.6223 | 0.4408 | 0.5152 | rfe    | KNeighborsClassifier() |
-| 0.8163 | 0.8378 | 0.222  | 0.3474 | lasso  | SVC(C=3) |
-| 0.818  | 0.621  | 0.471  | 0.5339 | lasso  | RandomForestClassifier(n_estimators=9) |
-| 0.8181 | 0.6266 | 0.4515 | 0.5242 | rfe    | RandomForestClassifier(n_estimators=13) |
-| 0.8185 | 0.6216 | 0.4733 | 0.536  | all    | RandomForestClassifier(n_estimators=5) |
-| 0.8192 | 0.6279 | 0.4604 | 0.5303 | rfe    | RandomForestClassifier(n_estimators=17) |
-| 0.8196 | 0.6227 | 0.4791 | 0.5407 | all    | KNeighborsClassifier(n_neighbors=3) |
-| 0.82   | 0.6389 | 0.4363 | 0.5181 | mutual | RandomForestClassifier(n_estimators=11) |
-| 0.8204 | 0.8377 | 0.2444 | 0.3754 | all    | SVC(C=7, kernel='poly') |
-| 0.8204 | 0.6342 | 0.4591 | 0.5314 | lasso  | RandomForestClassifier(n_estimators=13) |
-| 0.8206 | 0.6449 | 0.4329 | 0.5169 | mutual | KNeighborsClassifier() |
-| 0.8207 | 0.6311 | 0.4649 | 0.5347 | all    | RandomForestClassifier(n_estimators=7) |
-| 0.8207 | 0.6359 | 0.4552 | 0.5295 | rfe    | RandomForestClassifier(n_estimators=19) |
-| 0.8215 | 0.7747 | 0.2865 | 0.4147 | mutual | SVC(C=4, kernel='linear') |
-| 0.8217 | 0.6338 | 0.472  | 0.5401 | lasso  | RandomForestClassifier(n_estimators=11) |
-| 0.8219 | 0.6339 | 0.4769 | 0.5427 | lasso  | RandomForestClassifier(n_estimators=15) |
-| 0.8221 | 0.646  | 0.4411 | 0.5238 | mutual | RandomForestClassifier(n_estimators=13) |
+| 0.8173 | 0.8343 | 0.2276 | 0.3549 | all    | SVC(C=8, kernel='poly') |
+| 0.8177 | 0.6212 | 0.4676 | 0.5322 | lasso  | RandomForestClassifier(n_estimators=7) |        
+| 0.8189 | 0.8302 | 0.2418 | 0.3705 | mutual | SVC(C=6) |
+| 0.8191 | 0.6289 | 0.4616 | 0.5308 | rfe    | RandomForestClassifier(n_estimators=13) |       
+| 0.8195 | 0.6260 | 0.4694 | 0.5355 | lasso  | RandomForestClassifier(n_estimators=9) |
+| 0.8195 | 0.6307 | 0.4592 | 0.5301 | rfe    | RandomForestClassifier(n_estimators=17) |       
+| 0.8206 | 0.6255 | 0.4822 | 0.5437 | all    | KNeighborsClassifier(n_neighbors=3) |
+| 0.8214 | 0.8308 | 0.2521 | 0.3843 | all    | SVC(C=9, kernel='poly') |
+| 0.8221 | 0.6369 | 0.4671 | 0.5380 | rfe    | RandomForestClassifier(n_estimators=15) |        
+| 0.8222 | 0.8194 | 0.2635 | 0.3955 | mutual | SVC(C=7) |
+| 0.8225 | 0.6363 | 0.4761 | 0.5433 | rfe    | RandomForestClassifier(n_estimators=11) |       
 | 0.8226 | 0.8259 | 0.2616 | 0.3946 | rfe    | SVC(C=5) |
-| 0.8232 | 0.8204 | 0.2675 | 0.401  | rfe    | SVC(C=1, kernel='poly') |
-| 0.8233 | 0.6455 | 0.4586 | 0.5351 | rfe    | RandomForestClassifier(n_estimators=15) |
-| 0.8235 | 0.8252 | 0.2664 | 0.4005 | all    | SVC(C=8, kernel='poly') |
-| 0.8235 | 0.6415 | 0.4678 | 0.5399 | lasso  | RandomForestClassifier(n_estimators=17) |
-| 0.8251 | 0.6537 | 0.4519 | 0.534  | mutual | RandomForestClassifier(n_estimators=17) |
-| 0.8254 | 0.6546 | 0.4513 | 0.5341 | mutual | RandomForestClassifier(n_estimators=19) |
-| 0.8257 | 0.8225 | 0.2808 | 0.4162 | lasso  | SVC(C=4) |
-| 0.8257 | 0.665  | 0.4366 | 0.5262 | rfe    | KNeighborsClassifier(n_neighbors=7) |
-| 0.8258 | 0.6578 | 0.4508 | 0.5341 | lasso  | KNeighborsClassifier() |
-| 0.8262 | 0.6554 | 0.4603 | 0.5404 | all    | RandomForestClassifier(n_estimators=9) |
-| 0.8263 | 0.8163 | 0.288  | 0.4234 | rfe    | SVC(C=6) |
-| 0.8263 | 0.6807 | 0.4154 | 0.5149 | mutual | KNeighborsClassifier(n_neighbors=9) |
-| 0.827  | 0.8179 | 0.2912 | 0.4271 | all    | SVC(C=9, kernel='poly') |
-| 0.8272 | 0.6636 | 0.4509 | 0.5365 | mutual | RandomForestClassifier(n_estimators=15) |
-| 0.8273 | 0.7708 | 0.3227 | 0.453  | mutual | SVC(C=5, kernel='linear') |
-| 0.8274 | 0.6772 | 0.4307 | 0.5255 | mutual | KNeighborsClassifier(n_neighbors=7) |
-| 0.8281 | 0.809  | 0.3032 | 0.4386 | rfe    | SVC(C=7) |
-| 0.8283 | 0.6588 | 0.4743 | 0.5505 | lasso  | RandomForestClassifier(n_estimators=19) |
-| 0.8294 | 0.8069 | 0.3105 | 0.4464 | lasso  | SVC(C=5) |
-| 0.8296 | 0.7794 | 0.3252 | 0.4586 | mutual | SVC(C=2, kernel='poly') |
-| 0.8296 | 0.7801 | 0.3246 | 0.4581 | mutual | SVC(C=1, kernel='poly') |
-| 0.8299 | 0.7599 | 0.3454 | 0.474  | mutual | SVC(C=6, kernel='linear') |
-| 0.8301 | 0.7784 | 0.3291 | 0.462  | mutual | SVC(C=4, kernel='poly') |
-| 0.8301 | 0.7802 | 0.3279 | 0.4612 | mutual | SVC(C=3, kernel='poly') |
+| 0.8228 | 0.6411 | 0.4660 | 0.5380 | rfe    | RandomForestClassifier(n_estimators=19) |
+| 0.8232 | 0.8204 | 0.2675 | 0.4010 | rfe    | SVC(C=1, kernel='poly') |
+| 0.8235 | 0.6423 | 0.4689 | 0.5412 | mutual | RandomForestClassifier(n_estimators=9) |        
+| 0.8237 | 0.8024 | 0.2815 | 0.4136 | mutual | SVC(C=8) |
+| 0.8239 | 0.8053 | 0.2809 | 0.4136 | mutual | SVC(C=2, kernel='poly') |
+| 0.8240 | 0.8396 | 0.2622 | 0.3974 | lasso  | SVC(C=4) |
+| 0.8248 | 0.6482 | 0.4648 | 0.5407 | lasso  | RandomForestClassifier(n_estimators=11) |       
+| 0.8248 | 0.6474 | 0.4695 | 0.5432 | all    | RandomForestClassifier(n_estimators=7) |        
+| 0.8248 | 0.6636 | 0.4352 | 0.5243 | mutual | KNeighborsClassifier(n_neighbors=7) |
+| 0.8252 | 0.7912 | 0.2957 | 0.4282 | mutual | SVC(C=9) |
+| 0.8257 | 0.6650 | 0.4366 | 0.5262 | rfe    | KNeighborsClassifier(n_neighbors=7) |
+| 0.8259 | 0.6565 | 0.4589 | 0.5392 | lasso  | RandomForestClassifier(n_estimators=15) |       
+| 0.8262 | 0.6572 | 0.4642 | 0.5421 | lasso  | RandomForestClassifier(n_estimators=13) |       
+| 0.8263 | 0.8163 | 0.2880 | 0.4234 | rfe    | SVC(C=6) |
+| 0.8263 | 0.6511 | 0.4750 | 0.5483 | mutual | RandomForestClassifier(n_estimators=11) |        
+| 0.8266 | 0.6569 | 0.4623 | 0.5419 | mutual | RandomForestClassifier(n_estimators=17) |       
+| 0.8272 | 0.8126 | 0.2947 | 0.4303 | lasso  | SVC(C=5) |
+| 0.8274 | 0.6584 | 0.4663 | 0.5453 | mutual | RandomForestClassifier(n_estimators=13) |       
+| 0.8276 | 0.7784 | 0.3190 | 0.4504 | mutual | SVC(C=3, kernel='poly') |
+| 0.8276 | 0.6665 | 0.4501 | 0.5364 | lasso  | KNeighborsClassifier() |
+| 0.8277 | 0.8212 | 0.2930 | 0.4297 | lasso  | SVC(C=2, kernel='poly') |
+| 0.8279 | 0.6633 | 0.4592 | 0.5420 | mutual | RandomForestClassifier(n_estimators=19) |        
+| 0.8280 | 0.6617 | 0.4655 | 0.5457 | lasso  | RandomForestClassifier(n_estimators=17) |        
+| 0.8281 | 0.8090 | 0.3032 | 0.4386 | rfe    | SVC(C=7) |
+| 0.8283 | 0.6644 | 0.4617 | 0.5441 | all    | RandomForestClassifier(n_estimators=11) |       
+| 0.8285 | 0.6605 | 0.4703 | 0.5488 | mutual | RandomForestClassifier(n_estimators=15) |       
+| 0.8295 | 0.6860 | 0.4312 | 0.5287 | mutual | KNeighborsClassifier(n_neighbors=9) |
+| 0.8296 | 0.6633 | 0.4753 | 0.5533 | all    | RandomForestClassifier(n_estimators=9) |
+| 0.8299 | 0.6713 | 0.4651 | 0.5480 | lasso  | RandomForestClassifier(n_estimators=19) |        
 | 0.8301 | 0.8041 | 0.3165 | 0.4522 | rfe    | SVC(C=8) |
-| 0.8301 | 0.7801 | 0.3288 | 0.4619 | mutual | SVC(C=8, kernel='poly') |
 | 0.8302 | 0.7951 | 0.3234 | 0.4578 | rfe    | SVC(C=9) |
-| 0.8302 | 0.7013 | 0.4135 | 0.5192 | mutual | KNeighborsClassifier(n_neighbors=11) |
-| 0.8303 | 0.7818 | 0.3286 | 0.4621 | mutual | SVC(C=5, kernel='poly') |
-| 0.8303 | 0.7822 | 0.3288 | 0.4623 | mutual | SVC(C=7, kernel='poly') |
-| 0.8305 | 0.6709 | 0.4702 | 0.5515 | all    | RandomForestClassifier(n_estimators=11) |
+| 0.8306 | 0.8042 | 0.3191 | 0.4551 | lasso  | SVC(C=6) |
 | 0.8306 | 0.6883 | 0.4382 | 0.5342 | rfe    | KNeighborsClassifier(n_neighbors=9) |
-| 0.8307 | 0.7084 | 0.4076 | 0.5165 | mutual | KNeighborsClassifier(n_neighbors=13) |
-| 0.8307 | 0.7827 | 0.3304 | 0.4641 | mutual | SVC(C=6, kernel='poly') |
-| 0.8307 | 0.7816 | 0.3318 | 0.4651 | mutual | SVC(C=9, kernel='poly') |
-| 0.831  | 0.7803 | 0.341  | 0.472  | rfe    | SVC(C=2, kernel='poly') |
-| 0.8314 | 0.7845 | 0.3347 | 0.4684 | mutual | SVC(C=3) |
-| 0.8314 | 0.7841 | 0.3346 | 0.4684 | mutual | SVC(C=2) |
-| 0.8314 | 0.7843 | 0.3347 | 0.4685 | mutual | SVC(C=1) |
-| 0.8316 | 0.785  | 0.3355 | 0.4692 | mutual | SVC(C=5) |
-| 0.8316 | 0.723  | 0.3953 | 0.51   | mutual | KNeighborsClassifier(n_neighbors=19) |
-| 0.8316 | 0.6791 | 0.4605 | 0.5481 | all    | KNeighborsClassifier() |
-| 0.8317 | 0.7861 | 0.3355 | 0.4694 | mutual | SVC(C=6) |
-| 0.8317 | 0.7197 | 0.3989 | 0.5125 | mutual | KNeighborsClassifier(n_neighbors=17) |
-| 0.8317 | 0.7303 | 0.3877 | 0.5055 | mutual | KNeighborsClassifier(n_neighbors=25) |
-| 0.8318 | 0.7854 | 0.3367 | 0.4705 | mutual | SVC(C=7) |
-| 0.8318 | 0.7862 | 0.3362 | 0.4701 | mutual | SVC(C=4) |
-| 0.8318 | 0.7295 | 0.3884 | 0.5062 | mutual | KNeighborsClassifier(n_neighbors=23) |
-| 0.8318 | 0.6845 | 0.4529 | 0.5441 | lasso  | KNeighborsClassifier(n_neighbors=7) |
+| 0.8309 | 0.7788 | 0.3394 | 0.4708 | mutual | SVC(C=4, kernel='poly') |
+| 0.8310 | 0.7803 | 0.3410 | 0.4720 | rfe    | SVC(C=2, kernel='poly') |
+| 0.8310 | 0.6832 | 0.4506 | 0.5417 | lasso  | KNeighborsClassifier(n_neighbors=7) |
+| 0.8316 | 0.7176 | 0.4062 | 0.5168 | mutual | SVC(C=3, kernel='linear') |
+| 0.8317 | 0.7186 | 0.4072 | 0.5174 | mutual | SVC(C=5, kernel='linear') |
+| 0.8318 | 0.7176 | 0.4074 | 0.5179 | mutual | SVC(C=4, kernel='linear') |
 | 0.8318 | 0.6987 | 0.4328 | 0.5331 | rfe    | KNeighborsClassifier(n_neighbors=11) |
-| 0.832  | 0.7337 | 0.3858 | 0.5048 | mutual | KNeighborsClassifier(n_neighbors=27) |
-| 0.832  | 0.7856 | 0.3373 | 0.4711 | mutual | SVC(C=8) |
-| 0.832  | 0.7855 | 0.3372 | 0.471  | mutual | SVC(C=9) |
-| 0.832  | 0.7261 | 0.3934 | 0.5096 | mutual | KNeighborsClassifier(n_neighbors=21) |
-| 0.832  | 0.759  | 0.3595 | 0.4871 | mutual | SVC(C=7, kernel='linear') |
-| 0.8321 | 0.719  | 0.4043 | 0.5164 | mutual | KNeighborsClassifier(n_neighbors=15) |
-| 0.8323 | 0.7388 | 0.3823 | 0.5029 | mutual | KNeighborsClassifier(n_neighbors=29) |
-| 0.8325 | 0.7516 | 0.368  | 0.4936 | mutual | SVC(C=9, kernel='linear') |
-| 0.8327 | 0.8029 | 0.3317 | 0.4678 | lasso  | SVC(C=6) |
-| 0.8327 | 0.8002 | 0.3344 | 0.4698 | lasso  | SVC(C=2, kernel='poly') |
+| 0.8320 | 0.7778 | 0.3466 | 0.4778 | mutual | SVC(C=5, kernel='poly') |
+| 0.8320 | 0.7176 | 0.4078 | 0.5184 | mutual | SVC(C=6, kernel='linear') |
+| 0.8321 | 0.7171 | 0.4107 | 0.5204 | mutual | SVC(C=7, kernel='linear') |
+| 0.8323 | 0.7743 | 0.3509 | 0.4813 | mutual | SVC(C=6, kernel='poly') |
+| 0.8323 | 0.7687 | 0.3544 | 0.4839 | mutual | SVC(C=7, kernel='poly') |
+| 0.8323 | 0.7258 | 0.3976 | 0.5125 | mutual | SVC(C=1, kernel='linear') |
+| 0.8324 | 0.6916 | 0.4473 | 0.5421 | all    | RandomForestClassifier(n_estimators=15) |       
+| 0.8325 | 0.7680 | 0.3570 | 0.4860 | mutual | SVC(C=8, kernel='poly') |
+| 0.8325 | 0.7146 | 0.4177 | 0.5251 | mutual | SVC(C=8, kernel='linear') |
+| 0.8327 | 0.7194 | 0.4107 | 0.5211 | mutual | SVC(C=9, kernel='linear') |
+| 0.8327 | 0.7985 | 0.3349 | 0.4702 | lasso  | SVC(C=7) |
 | 0.8328 | 0.7055 | 0.4307 | 0.5334 | rfe    | KNeighborsClassifier(n_neighbors=13) |
-| 0.8334 | 0.7603 | 0.3664 | 0.4938 | mutual | SVC(C=8, kernel='linear') |
-| 0.8335 | 0.7094 | 0.428  | 0.5329 | rfe    | KNeighborsClassifier(n_neighbors=19) |
-| 0.8335 | 0.7115 | 0.425  | 0.5312 | rfe    | KNeighborsClassifier(n_neighbors=21) |
-| 0.8336 | 0.7985 | 0.3404 | 0.4757 | lasso  | SVC(C=7) |
-| 0.8338 | 0.7029 | 0.4383 | 0.539  | all    | KNeighborsClassifier(n_neighbors=7) |
-| 0.8339 | 0.7861 | 0.3498 | 0.483  | lasso  | SVC(C=8) |
-| 0.8339 | 0.7673 | 0.3659 | 0.4941 | lasso  | SVC(C=4, kernel='poly') |
-| 0.8339 | 0.7583 | 0.3738 | 0.4994 | lasso  | SVC(C=5, kernel='poly') |
-| 0.8339 | 0.7527 | 0.38   | 0.5034 | lasso  | SVC(C=6, kernel='poly') |
-| 0.834  | 0.7792 | 0.356  | 0.4876 | lasso  | SVC(C=9) |
-| 0.8342 | 0.7702 | 0.3683 | 0.496  | rfe    | SVC(C=3, kernel='poly') |
+| 0.8328 | 0.6835 | 0.4636 | 0.5514 | all    | KNeighborsClassifier() |
+| 0.8329 | 0.7983 | 0.3374 | 0.4725 | lasso  | SVC(C=3, kernel='poly') |
+| 0.8329 | 0.7662 | 0.3604 | 0.4891 | mutual | SVC(C=9, kernel='poly') |
+| 0.8329 | 0.7218 | 0.4087 | 0.5206 | mutual | SVC(C=2, kernel='linear') |
+| 0.8335 | 0.7063 | 0.4315 | 0.5348 | mutual | KNeighborsClassifier(n_neighbors=11) |
+| 0.8335 | 0.7094 | 0.4280 | 0.5329 | rfe    | KNeighborsClassifier(n_neighbors=19) |
+| 0.8335 | 0.7115 | 0.4250 | 0.5312 | rfe    | KNeighborsClassifier(n_neighbors=21) |
+| 0.8338 | 0.7020 | 0.4411 | 0.5406 | all    | KNeighborsClassifier(n_neighbors=7) |
+| 0.8339 | 0.7531 | 0.3802 | 0.5036 | lasso  | SVC(C=8, kernel='poly') |
+| 0.8339 | 0.7571 | 0.3750 | 0.5002 | lasso  | SVC(C=7, kernel='poly') |
+| 0.8340 | 0.7650 | 0.3689 | 0.4963 | lasso  | SVC(C=6, kernel='poly') |
+| 0.8342 | 0.7137 | 0.4258 | 0.5326 | mutual | KNeighborsClassifier(n_neighbors=13) |
+| 0.8342 | 0.7702 | 0.3683 | 0.4960 | rfe    | SVC(C=3, kernel='poly') |
+| 0.8342 | 0.7224 | 0.4145 | 0.5259 | mutual | KNeighborsClassifier(n_neighbors=19) |
+| 0.8342 | 0.7985 | 0.3433 | 0.4786 | lasso  | SVC(C=8) |
 | 0.8343 | 0.7613 | 0.3761 | 0.5014 | rfe    | SVC(C=4, kernel='poly') |
-| 0.8345 | 0.7513 | 0.3858 | 0.5081 | lasso  | SVC(C=7, kernel='poly') |
-| 0.8346 | 0.6949 | 0.4582 | 0.5514 | all    | RandomForestClassifier(n_estimators=15) |
-| 0.8346 | 0.7829 | 0.3573 | 0.4892 | lasso  | SVC(C=3, kernel='poly') |
+| 0.8343 | 0.7034 | 0.4442 | 0.5433 | lasso  | KNeighborsClassifier(n_neighbors=9) |
+| 0.8345 | 0.6952 | 0.4559 | 0.5503 | all    | RandomForestClassifier(n_estimators=13) |       
+| 0.8345 | 0.7898 | 0.3503 | 0.4842 | lasso  | SVC(C=9) |
+| 0.8345 | 0.7239 | 0.4158 | 0.5272 | mutual | KNeighborsClassifier(n_neighbors=21) |
+| 0.8346 | 0.7517 | 0.3856 | 0.5083 | lasso  | SVC(C=9, kernel='poly') |
 | 0.8346 | 0.7167 | 0.4256 | 0.5332 | rfe    | KNeighborsClassifier(n_neighbors=23) |
-| 0.8346 | 0.7046 | 0.443  | 0.543  | lasso  | KNeighborsClassifier(n_neighbors=9) |
-| 0.8349 | 0.7501 | 0.3903 | 0.5116 | lasso  | SVC(C=8, kernel='poly') |
-| 0.8349 | 0.7487 | 0.3923 | 0.5127 | lasso  | SVC(C=9, kernel='poly') |
-| 0.835  | 0.7525 | 0.3881 | 0.5105 | rfe    | SVC(C=6, kernel='poly') |
-| 0.835  | 0.7201 | 0.4233 | 0.5323 | rfe    | SVC(C=2, kernel='linear') |
+| 0.8347 | 0.7887 | 0.3535 | 0.4868 | lasso  | SVC(C=4, kernel='poly') |
+| 0.8347 | 0.7739 | 0.3660 | 0.4954 | lasso  | SVC(C=5, kernel='poly') |
+| 0.8349 | 0.7339 | 0.4048 | 0.5211 | mutual | KNeighborsClassifier(n_neighbors=25) |
+| 0.8350 | 0.7525 | 0.3881 | 0.5105 | rfe    | SVC(C=6, kernel='poly') |
+| 0.8350 | 0.7201 | 0.4233 | 0.5323 | rfe    | SVC(C=2, kernel='linear') |
+| 0.8350 | 0.7353 | 0.4026 | 0.5198 | mutual | KNeighborsClassifier(n_neighbors=27) |
 | 0.8351 | 0.7548 | 0.3862 | 0.5094 | rfe    | SVC(C=5, kernel='poly') |
-| 0.8351 | 0.7235 | 0.4194 | 0.5301 | all    | KNeighborsClassifier(n_neighbors=13) |
-| 0.8353 | 0.7489 | 0.3947 | 0.515  | rfe    | SVC(C=8, kernel='poly') |
-| 0.8353 | 0.6897 | 0.4712 | 0.5593 | all    | RandomForestClassifier(n_estimators=13) |
+| 0.8351 | 0.7303 | 0.4109 | 0.5252 | mutual | KNeighborsClassifier(n_neighbors=23) |
+| 0.8351 | 0.7229 | 0.4199 | 0.5303 | all    | KNeighborsClassifier(n_neighbors=13) |
+| 0.8353 | 0.7489 | 0.3947 | 0.5150 | rfe    | SVC(C=8, kernel='poly') |
+| 0.8353 | 0.7231 | 0.4213 | 0.5316 | mutual | KNeighborsClassifier(n_neighbors=17) |
 | 0.8353 | 0.7196 | 0.4258 | 0.5342 | rfe    | SVC(C=1, kernel='linear') |
-| 0.8356 | 0.7512 | 0.394  | 0.5151 | rfe    | SVC(C=7, kernel='poly') |
+| 0.8353 | 0.7223 | 0.4235 | 0.5329 | mutual | KNeighborsClassifier(n_neighbors=15) |
+| 0.8356 | 0.7512 | 0.3940 | 0.5151 | rfe    | SVC(C=7, kernel='poly') |
+| 0.8356 | 0.7169 | 0.4328 | 0.5387 | all    | KNeighborsClassifier(n_neighbors=9) |
+| 0.8356 | 0.7415 | 0.3996 | 0.5188 | mutual | KNeighborsClassifier(n_neighbors=29) |
+| 0.8356 | 0.7176 | 0.4297 | 0.5367 | all    | KNeighborsClassifier(n_neighbors=11) |
 | 0.8356 | 0.7249 | 0.4224 | 0.5326 | rfe    | KNeighborsClassifier(n_neighbors=25) |
 | 0.8356 | 0.7177 | 0.4327 | 0.5385 | rfe    | KNeighborsClassifier(n_neighbors=15) |
-| 0.8357 | 0.7098 | 0.4452 | 0.5456 | all    | SVC(C=5, kernel='linear') |
-| 0.8357 | 0.7227 | 0.426  | 0.5349 | rfe    | SVC(C=5, kernel='linear') |
-| 0.8358 | 0.7504 | 0.3966 | 0.517  | rfe    | SVC(C=9, kernel='poly') |
-| 0.8358 | 0.7078 | 0.4522 | 0.5496 | all    | SVC(C=4, kernel='linear') |
-| 0.8358 | 0.722  | 0.4272 | 0.5358 | rfe    | SVC(C=6, kernel='linear') |
-| 0.836  | 0.7034 | 0.4596 | 0.5541 | all    | SVC(C=7, kernel='linear') |
-| 0.836  | 0.725  | 0.4247 | 0.5346 | rfe    | SVC(C=9, kernel='linear') |
-| 0.836  | 0.7254 | 0.4241 | 0.5342 | rfe    | SVC(C=8, kernel='linear') |
-| 0.836  | 0.7223 | 0.4278 | 0.5363 | rfe    | SVC(C=4, kernel='linear') |
-| 0.836  | 0.7184 | 0.4342 | 0.5402 | rfe    | KNeighborsClassifier(n_neighbors=17) |
-| 0.8361 | 0.7095 | 0.4506 | 0.5494 | lasso  | SVC(C=4, kernel='linear') |
+| 0.8357 | 0.7227 | 0.4260 | 0.5349 | rfe    | SVC(C=5, kernel='linear') |
+| 0.8358 | 0.6933 | 0.4721 | 0.5605 | all    | RandomForestClassifier(n_estimators=19) |       
+| 0.8358 | 0.7504 | 0.3966 | 0.5170 | rfe    | SVC(C=9, kernel='poly') |
+| 0.8358 | 0.7220 | 0.4272 | 0.5358 | rfe    | SVC(C=6, kernel='linear') |
+| 0.8360 | 0.7250 | 0.4247 | 0.5346 | rfe    | SVC(C=9, kernel='linear') |
+| 0.8360 | 0.7254 | 0.4241 | 0.5342 | rfe    | SVC(C=8, kernel='linear') |
+| 0.8360 | 0.7223 | 0.4278 | 0.5363 | rfe    | SVC(C=4, kernel='linear') |
+| 0.8360 | 0.7184 | 0.4342 | 0.5402 | rfe    | KNeighborsClassifier(n_neighbors=17) |
 | 0.8361 | 0.7236 | 0.4272 | 0.5363 | rfe    | SVC(C=7, kernel='linear') |
 | 0.8361 | 0.7288 | 0.4198 | 0.5318 | rfe    | KNeighborsClassifier(n_neighbors=27) |
-| 0.8361 | 0.7132 | 0.4426 | 0.5451 | lasso  | KNeighborsClassifier(n_neighbors=11) |
-| 0.8362 | 0.7153 | 0.441  | 0.5443 | lasso  | SVC(C=1, kernel='linear') |
-| 0.8362 | 0.7099 | 0.449  | 0.5487 | lasso  | SVC(C=9, kernel='linear') |
-| 0.8362 | 0.7104 | 0.4494 | 0.549 | all    | SVC(C=1, kernel='linear') |
-| 0.8364 | 0.7214 | 0.433  | 0.5399 | all    | KNeighborsClassifier(n_neighbors=9) |
-| 0.8364 | 0.7156 | 0.4404 | 0.5442 | lasso  | KNeighborsClassifier(n_neighbors=15) |
-| 0.8364 | 0.7193 | 0.4362 | 0.5419 | lasso  | KNeighborsClassifier(n_neighbors=13) |
-| 0.8364 | 0.7222 | 0.4298 | 0.5381 | all    | KNeighborsClassifier(n_neighbors=11) |
-| 0.8365 | 0.7125 | 0.448  | 0.5486 | lasso  | SVC(C=2, kernel='linear') |
-| 0.8365 | 0.7111 | 0.4511 | 0.5503 | lasso  | SVC(C=5, kernel='linear') |
-| 0.8365 | 0.7128 | 0.4486 | 0.5489 | lasso  | SVC(C=8, kernel='linear') |
+| 0.8365 | 0.7105 | 0.4514 | 0.5504 | all    | SVC(C=6, kernel='linear') |
 | 0.8365 | 0.7232 | 0.4302 | 0.5386 | rfe    | SVC(C=3, kernel='linear') |
 | 0.8365 | 0.7314 | 0.4195 | 0.5323 | rfe    | KNeighborsClassifier(n_neighbors=29) |
-| 0.8368 | 0.712  | 0.4525 | 0.5513 | lasso  | SVC(C=7, kernel='linear') |
-| 0.8369 | 0.7114 | 0.4517 | 0.5512 | all    | SVC(C=2, kernel='linear') |
-| 0.8369 | 0.7154 | 0.446  | 0.5478 | all    | SVC(C=8, kernel='linear') |
-| 0.8371 | 0.7147 | 0.4498 | 0.5504 | lasso  | SVC(C=3, kernel='linear') |
-| 0.8371 | 0.7138 | 0.449  | 0.5497 | all    | SVC(C=3, kernel='linear') |
-| 0.8373 | 0.7149 | 0.451  | 0.5514 | lasso  | SVC(C=6, kernel='linear') |
-| 0.8373 | 0.7169 | 0.4511 | 0.5513 | all    | SVC(C=9, kernel='linear') |
-| 0.8375 | 0.724  | 0.4381 | 0.5446 | lasso  | KNeighborsClassifier(n_neighbors=17) |
-| 0.8375 | 0.7326 | 0.4248 | 0.5369 | all    | KNeighborsClassifier(n_neighbors=15) |
-| 0.8376 | 0.7071 | 0.461  | 0.5575 | all    | RandomForestClassifier(n_estimators=17) |
-| 0.8376 | 0.732  | 0.4281 | 0.5391 | lasso  | KNeighborsClassifier(n_neighbors=23) |
-| 0.8378 | 0.7022 | 0.4712 | 0.5632 | all    | RandomForestClassifier(n_estimators=19) |
-| 0.8379 | 0.7293 | 0.4333 | 0.5426 | lasso  | KNeighborsClassifier(n_neighbors=19) |
-| 0.8383 | 0.7168 | 0.455  | 0.555  | all    | SVC(C=6, kernel='linear') |
-| 0.8384 | 0.7352 | 0.4292 | 0.5411 | lasso  | KNeighborsClassifier(n_neighbors=25) |
-| 0.8387 | 0.7344 | 0.433  | 0.5437 | lasso  | KNeighborsClassifier(n_neighbors=21) |
-| 0.8387 | 0.7383 | 0.4265 | 0.5399 | lasso  | KNeighborsClassifier(n_neighbors=27) |
-| 0.839  | 0.7491 | 0.4157 | 0.5338 | all    | KNeighborsClassifier(n_neighbors=21) |
-| 0.8391 | 0.7574 | 0.4078 | 0.5293 | all    | KNeighborsClassifier(n_neighbors=25) |
-| 0.8395 | 0.7474 | 0.421  | 0.5379 | all    | KNeighborsClassifier(n_neighbors=19) |
-| 0.8395 | 0.7661 | 0.4017 | 0.5261 | all    | KNeighborsClassifier(n_neighbors=29) |
-| 0.8402 | 0.7652 | 0.4073 | 0.5307 | all    | KNeighborsClassifier(n_neighbors=27) |
-| 0.8402 | 0.7628 | 0.4106 | 0.5327 | all    | VotingClassifier(estimators=best_7) |
-| 0.8404 | 0.7435 | 0.4315 | 0.5454 | lasso  | KNeighborsClassifier(n_neighbors=29) |
-| 0.8408 | 0.7475 | 0.4296 | 0.5446 | all    | KNeighborsClassifier(n_neighbors=17) |
-| 0.8411 | 0.7606 | 0.4167 | 0.5375 | all    | KNeighborsClassifier(n_neighbors=23) |
-| 0.8412 | 0.7717 | 0.4071 | 0.5321 | all    | VotingClassifier(estimators=best_5) |
-| 0.8416 | 0.7636 | 0.4174 | 0.5389 | all    | VotingClassifier(estimators=best_3) |
+| 0.8367 | 0.7077 | 0.4555 | 0.5530 | lasso  | SVC(C=5, kernel='linear') |
+| 0.8368 | 0.7091 | 0.4582 | 0.5543 | all    | SVC(C=3, kernel='linear') |
+| 0.8368 | 0.7110 | 0.4528 | 0.5513 | all    | SVC(C=1, kernel='linear') |
+| 0.8371 | 0.7115 | 0.4535 | 0.5521 | all    | SVC(C=8, kernel='linear') |
+| 0.8371 | 0.7068 | 0.4615 | 0.5568 | all    | SVC(C=5, kernel='linear') |
+| 0.8371 | 0.7086 | 0.4579 | 0.5549 | lasso  | SVC(C=3, kernel='linear') |
+| 0.8372 | 0.7280 | 0.4302 | 0.5397 | lasso  | KNeighborsClassifier(n_neighbors=19) |
+| 0.8372 | 0.7055 | 0.4618 | 0.5571 | all    | RandomForestClassifier(n_estimators=17) |       
+| 0.8372 | 0.7138 | 0.4493 | 0.5499 | all    | SVC(C=2, kernel='linear') |
+| 0.8372 | 0.7091 | 0.4571 | 0.5547 | lasso  | SVC(C=2, kernel='linear') |
+| 0.8372 | 0.7176 | 0.4440 | 0.5477 | lasso  | KNeighborsClassifier(n_neighbors=11) |
+| 0.8373 | 0.7147 | 0.4529 | 0.5525 | lasso  | SVC(C=1, kernel='linear') |
+| 0.8373 | 0.7093 | 0.4577 | 0.5552 | lasso  | SVC(C=4, kernel='linear') |
+| 0.8375 | 0.7229 | 0.4395 | 0.5455 | lasso  | KNeighborsClassifier(n_neighbors=13) |
+| 0.8378 | 0.7354 | 0.4230 | 0.5363 | all    | KNeighborsClassifier(n_neighbors=15) |
+| 0.8378 | 0.7103 | 0.4598 | 0.5569 | lasso  | SVC(C=6, kernel='linear') |
+| 0.8379 | 0.7291 | 0.4342 | 0.5430 | lasso  | KNeighborsClassifier(n_neighbors=17) |
+| 0.8379 | 0.7239 | 0.4394 | 0.5458 | lasso  | KNeighborsClassifier(n_neighbors=15) |
+| 0.8379 | 0.7105 | 0.4595 | 0.5570 | lasso  | SVC(C=7, kernel='linear') |
+| 0.8380 | 0.7341 | 0.4281 | 0.5399 | lasso  | KNeighborsClassifier(n_neighbors=25) |
+| 0.8380 | 0.7180 | 0.4521 | 0.5528 | all    | SVC(C=7, kernel='linear') |
+| 0.8380 | 0.7108 | 0.4610 | 0.5580 | lasso  | SVC(C=9, kernel='linear') |
+| 0.8383 | 0.7365 | 0.4273 | 0.5398 | lasso  | KNeighborsClassifier(n_neighbors=23) |
+| 0.8383 | 0.7136 | 0.4586 | 0.5570 | all    | SVC(C=9, kernel='linear') |
+| 0.8383 | 0.7114 | 0.4622 | 0.5591 | lasso  | SVC(C=8, kernel='linear') |
+| 0.8389 | 0.7377 | 0.4294 | 0.5418 | lasso  | KNeighborsClassifier(n_neighbors=21) |
+| 0.8390 | 0.7152 | 0.4605 | 0.5591 | all    | SVC(C=4, kernel='linear') |
+| 0.8391 | 0.7458 | 0.4214 | 0.5376 | all    | KNeighborsClassifier(n_neighbors=19) |
+| 0.8393 | 0.7399 | 0.4293 | 0.5424 | lasso  | KNeighborsClassifier(n_neighbors=27) |
+| 0.8393 | 0.7612 | 0.4045 | 0.5274 | all    | KNeighborsClassifier(n_neighbors=27) |
+| 0.8393 | 0.7650 | 0.4012 | 0.5254 | all    | KNeighborsClassifier(n_neighbors=29) |
+| 0.8395 | 0.7509 | 0.4174 | 0.5358 | all    | KNeighborsClassifier(n_neighbors=21) |
+| 0.8400 | 0.7627 | 0.4086 | 0.5310 | all    | KNeighborsClassifier(n_neighbors=25) |
+| 0.8402 | 0.7421 | 0.4329 | 0.5460 | lasso  | KNeighborsClassifier(n_neighbors=29) |
+| 0.8402 | 0.7596 | 0.4125 | 0.5338 | all    | KNeighborsClassifier(n_neighbors=23) |
+| 0.8402 | 0.7600 | 0.4126 | 0.5339 | all    | VotingClassifier(5 estimators) |
+| 0.8404 | 0.7606 | 0.4125 | 0.5340 | all    | VotingClassifier(3 estimators) |
+| 0.8404 | 0.7468 | 0.4284 | 0.5433 | all    | KNeighborsClassifier(n_neighbors=17) |
+| 0.8406 | 0.7657 | 0.4098 | 0.5329 | all    | VotingClassifier(7 estimators) |

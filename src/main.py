@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
     """
     Parses command line arguments.
 
-    :return: tuple of verbose and data
+    :return: Command arguments.
     """
     parser = argparse.ArgumentParser(description="number of clusters to find")
     parser.add_argument(
@@ -78,24 +78,33 @@ def parse_args() -> argparse.Namespace:
 
 
 def normalize_column(col: pd.Series) -> pd.Series:
+    """
+    Normalize a Pandas Data Series.
+
+    :param col: Pandas Data Series to be normalized.
+    :return: Input Data Series, normalized.
+    """
     return (col - col.mean()) / col.std()
 
 
 def normalize(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalize a Pandas DataFrame.
+
+    :param df: Pandas DataFrame to be normalized.
+    :return: Input DataFrame, normalized on every column.
+    """
     # Modified from https://stackoverflow.com/questions/26414913/normalize-columns-of-a-dataframe
     return df.iloc[:].apply(normalize_column, axis=0)
 
 
 def eda(data: pd.DataFrame, writer: Writer) -> None:
     """
-    Perform exploratory data analysis
+    Perform exploratory data analysis on the DataFrame.
 
     :param data: Data to analyze.
     :param writer: where to write outputs.
     """
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
-    data = data.select_dtypes(include=numeric_types)
     numeric_columns: list[str] = list(data.columns)
     numeric_columns.remove("RainTomorrow")
     columns_count = len(numeric_columns)
@@ -137,10 +146,12 @@ def eda(data: pd.DataFrame, writer: Writer) -> None:
 
 
 def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+    """
+    Perform outlier detection on the data.
 
-    data = data.select_dtypes(include=numeric_types)
-
+    :param data: The data to have outliers detected.
+    :param writer: where to write outputs.
+    """
     lof = 20
     bandwidth = 0.8
     outliers = OutlierDetection(lof, bandwidth, data, writer)
@@ -150,14 +161,16 @@ def outlier_detection(data: pd.DataFrame, writer: Writer) -> None:
 
     lof_analyzer.scatter_plot("0", "1", ("Outlier", ["Out", "In"]), path="./lof")
     kd_analyzer.scatter_plot("0", "1", ("Outlier", ["Out", "In"]), path="./kd")
-    print("line")
 
 
 def clustering(data: pd.DataFrame, writer: Writer) -> None:
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
+    """
+    Perform clustering on the data.
 
-    numerics = data.select_dtypes(include=numeric_types)
-    numerics = normalize(numerics)
+    :param data: The data to cluster.
+    :param writer: where to write outputs.
+    """
+    numerics = normalize(data)
 
     kmeans = KMeans(n_clusters=2)
     optics = OPTICS()
@@ -189,12 +202,11 @@ def feature_selection(
     """
     Selects features based on several methods
 
-    :return: (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
+    :param data: The data to select features from.
+    :param writer: Where to write outputs.
+    :return: Tuple of (RFE DataFrame, Lasso DataFrame, Mutual Info DataFrame)
     """
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-
     data = data.copy(deep=True)
-    data = data.select_dtypes(include=numeric_types)
     rain_tomorrow = data["RainTomorrow"]
     data = data.drop(columns=["RainTomorrow"])
     data = normalize(data)
@@ -208,6 +220,12 @@ def feature_selection(
 
 
 def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
+    """
+    Perform classification on the data sets.
+
+    :param datasets: Pairs of DataFrames and their names.
+    :param  writer: Where to write outputs.
+    """
     k_nearest_neighbours = [KNeighborsClassifier(k + 1) for k in range(0, 30, 2)]
     support_vectors = [
         SupportVectorClassifier(C=C, kernel=kernel)
@@ -263,7 +281,7 @@ def classification(datasets: dict[str, pd.DataFrame], writer: Writer) -> None:
 
 def main() -> None:
     """
-    Main function of the program
+    Main function of the program.
     """
     args = parse_args()
     verbose = args.verbose
@@ -284,10 +302,7 @@ def main() -> None:
     writer: Writer = Writer(verbose, None)
     data = preprocess(path, data_reduction, writer)
 
-    numeric_types = ["int16", "int32", "int64", "float16", "float32", "float64"]
-    numerics = data.select_dtypes(include=numeric_types)
-
-    datasets = {"all": numerics}
+    datasets = {"all": data}
 
     if run_exploratory_data_analysis:
         eda(data, writer)
@@ -297,9 +312,9 @@ def main() -> None:
         outlier_detection(data, writer)
     if run_feature_selection:
         rfe, lasso, mutual = feature_selection(data, writer)
-        datasets["rfe"] = numerics[rfe.columns]
-        datasets["lasso"] = numerics[lasso.columns]
-        datasets["mutual"] = numerics[mutual.columns]
+        datasets["rfe"] = data[rfe.columns]
+        datasets["lasso"] = data[lasso.columns]
+        datasets["mutual"] = data[mutual.columns]
 
     if run_classification:
         classification(datasets, writer)
