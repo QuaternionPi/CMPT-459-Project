@@ -4,9 +4,28 @@ from writer import Writer
 from sklearn import preprocessing
 
 
+_numeric_types = [
+    np.int8,
+    np.int16,
+    np.int32,
+    np.int64,
+    np.uint8,
+    np.uint16,
+    np.uint32,
+    np.uint64,
+    np.float16,
+    np.float32,
+    np.float64,
+]
+
+
+def is_numeric(df: pd.DataFrame, col: str) -> bool:
+    return df[col].dtype in _numeric_types
+
+
 def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame:
     """
-    Preprocess data.
+    Preprocesses data, returns only numerics data types.
 
     :param path: Path to data df (csv).
     :param writer: Where to write outputs.
@@ -18,23 +37,9 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     frac = 1 - 1 / data_reduction
     df = df.drop(df.sample(frac=frac, random_state=1).index)
 
-    int_dtypes = [
-        np.int8,
-        np.int16,
-        np.int32,
-        np.int64,
-        np.uint8,
-        np.uint16,
-        np.uint32,
-        np.uint64,
-        np.float16,
-        np.float32,
-        np.float64,
-    ]
-
     # impute remaining NA values with mean. reference https://saturncloud.io/blog/how-to-replace-nan-values-with-the-average-of-columns-in-pandas-dataframe/
     for col in df.columns:
-        if df[col].dtype in int_dtypes:  # numerical, impute with mean
+        if is_numeric(df, col):  # numerical, impute with mean
             mean = df[col].mean()
             df[col] = df[col].fillna(mean)
 
@@ -57,5 +62,5 @@ def preprocess(path: str, data_reduction: float, writer: Writer) -> pd.DataFrame
     df["Month"] = pd.DatetimeIndex(df["Date"]).month
 
     # Remove redundant columns
-    df = df.drop(columns=["Location", "Date"])
+    df = df.select_dtypes(_numeric_types)
     return df
